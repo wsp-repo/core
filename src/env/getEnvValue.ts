@@ -1,12 +1,5 @@
 import { hasProperty } from '../helpers';
 
-/**
- * Отфильтровывает существующие имена переменных окружения
- */
-function filterEnvNames(names: string[]): string[] {
-  return names.filter((name) => hasProperty(process.env, name));
-}
-
 export enum EnvNameType {
   Strict = 'strict',
   Prefix = 'prefix',
@@ -36,9 +29,9 @@ export function getEnvName(
       break;
   }
 
-  const [resultName] = filterEnvNames(checkNames);
-
-  return resultName;
+  return checkNames.find((checkName: string) =>
+    hasProperty(process.env, checkName),
+  );
 }
 
 /**
