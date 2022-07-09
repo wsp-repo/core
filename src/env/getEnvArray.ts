@@ -12,5 +12,8 @@ export function getEnvArray(
 
   if (rawValue === undefined) return undefined;
 
-  return String(rawValue).trim().split(splitter);
+  return String(rawValue)
+    .split(splitter)
+    .map((v) => v.trim())
+    .filter(Boolean);
 }

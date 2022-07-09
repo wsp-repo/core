@@ -1,6 +1,6 @@
 {
   "name": "@wspro/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Core data",
   "author": "https://github.com/wsp-repo/",
   "license": "ISC",
@@ -21,7 +21,8 @@
     "lint:fix": "eslint 'src/**/*.{js,ts}' --quiet --fix",
     "lint:warns": "eslint 'src/**/*.ts' --max-warnings 0",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run lint"
+    "prepublishOnly": "npm run lint && npm run test",
+    "test": "jest"
   },
   "prettier": "@wspro/linter/prettier",
   "lint-staged": {
@@ -36,7 +37,31 @@
       "pre-commit": "lint-staged --allow-empty"
     }
   },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "diagnostics": true,
+        "ignoreCoverageForDecorators": true,
+        "ignoreCoverageForAllDecorators": true
+      }
+    },
+    "moduleFileExtensions": [
+      "json",
+      "ts",
+      "js"
+    ],
+    "verbose": true,
+    "bail": true,
+    "rootDir": "src",
+    "testRegex": "\\.test\\.ts$",
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testEnvironment": "node",
+    "collectCoverage": false
+  },
   "devDependencies": {
+    "@types/jest": "28.1.4",
     "@types/node": "18.0.3",
     "@typescript-eslint/eslint-plugin": "5.30.5",
     "@typescript-eslint/parser": "5.30.5",
@@ -51,9 +76,11 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-simple-import-sort": "7.0.0",
     "husky": "8.0.1",
+    "jest": "28.1.2",
     "lint-staged": "13.0.3",
     "prettier": "2.7.1",
     "rimraf": "3.0.2",
+    "ts-jest": "28.0.5",
     "ts-loader": "9.3.1",
     "ts-node": "10.8.2",
     "tsconfig-paths": "4.0.0",

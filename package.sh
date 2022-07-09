@@ -8,8 +8,11 @@ rm -r -f -d ./dist ./node_modules ./package-lock.json
 
 echo "Install dev dependencies..."
 npm install --save-dev --save-exact \
+    @types/jest@latest \
     @types/node@latest \
+    jest@latest \
     rimraf@latest \
+    ts-jest@latest \
     ts-loader@latest \
     ts-node@latest \
     tsconfig-paths@latest \
