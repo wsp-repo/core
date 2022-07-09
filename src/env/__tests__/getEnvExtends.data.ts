@@ -1,5 +1,11 @@
 /* eslint-disable sort-keys */
 /* eslint-disable @typescript-eslint/naming-convention */
+export interface TestItem {
+  getEnvValueMocked?: string;
+  getEnvArraySplitter?: RegExp | string;
+  getEnvArrayResult?: string[];
+}
+
 export const tests = {
   ENV_NOT_EXISTS: {
     getEnvValueMocked: undefined,
