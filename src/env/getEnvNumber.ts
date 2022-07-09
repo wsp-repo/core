@@ -1,13 +1,13 @@
-import { getEnvValue } from './getEnvValue';
+import { EnvNameType, getEnvValue } from './getEnvValue';
 
 /**
  * Возвращает параметр приведенный к числу
  */
 export function getEnvNumber(
   name: string,
-  strictName?: boolean,
+  type?: EnvNameType,
 ): number | undefined {
-  const rawValue = getEnvValue(name, strictName);
+  const rawValue = getEnvValue(name, type);
 
   if (rawValue === undefined) return undefined;
 

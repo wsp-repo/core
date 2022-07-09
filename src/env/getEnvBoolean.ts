@@ -1,4 +1,4 @@
-import { getEnvValue } from './getEnvValue';
+import { EnvNameType, getEnvValue } from './getEnvValue';
 
 // константы допустимых значений для маппинга
 const TRUE_VALUES = ['1', 'true', 't', 'on', 'enable', 'enabled'];
@@ -9,9 +9,9 @@ const FALSE_VALUES = ['0', 'false', 'f', 'off', 'disable', 'disabled'];
  */
 export function getEnvBoolean(
   name: string,
-  strictName?: boolean,
+  type?: EnvNameType,
 ): boolean | undefined {
-  const rawValue = getEnvValue(name, strictName);
+  const rawValue = getEnvValue(name, type);
 
   if (rawValue === undefined) return undefined;
 

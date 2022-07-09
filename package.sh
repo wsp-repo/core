@@ -3,9 +3,8 @@
 echo "Remove node_modules & package-lock.json"
 rm -r -f -d ./dist ./node_modules ./package-lock.json
 
-echo "Install dependencies..."
-npm install --save --save-exact \
-    @nestjs/common@latest
+# echo "Install dependencies..."
+# npm install --save --save-exact \
 
 echo "Install dev dependencies..."
 npm install --save-dev --save-exact \

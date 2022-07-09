@@ -1,18 +1,54 @@
+import { hasProperty } from '../helpers';
+
 /**
- * Возвращает значение переменной с учетом наличия префикса
+ * Отфильтровывает существующие имена переменных окружения
  */
-export function getEnvValue(
+function filterEnvNames(names: string[]): string[] {
+  return names.filter((name) => hasProperty(process.env, name));
+}
+
+export enum EnvNameType {
+  Strict = 'strict',
+  Prefix = 'prefix',
+}
+
+/**
+ * Возвращает имя переменной для использования
+ */
+export function getEnvName(
   name: string,
-  strictName = false,
+  type?: EnvNameType,
 ): string | undefined {
   if (name.length === 0) return undefined;
 
-  const strictValue = process.env[name];
+  const checkNames: string[] = [];
+  const prefix = String(process.env.ENV_PREFIX || '').trim();
 
-  if (strictName) return strictValue;
+  switch (type) {
+    case EnvNameType.Prefix:
+      checkNames.push(`${prefix}${name}`);
+      break;
+    case EnvNameType.Strict:
+      checkNames.push(name);
+      break;
+    default:
+      checkNames.push(`${prefix}${name}`, name);
+      break;
+  }
 
-  const prefix = process.env.ENV_PREFIX || '';
-  const prefixValue = process.env[`${prefix}${name}`];
+  const [resultName] = filterEnvNames(checkNames);
 
-  return prefixValue || strictValue === undefined ? prefixValue : strictValue;
+  return resultName;
+}
+
+/**
+ * Возвращает значение переменной с учетом указанного типа
+ */
+export function getEnvValue(
+  name: string,
+  type?: EnvNameType,
+): string | undefined {
+  const useName = getEnvName(name, type);
+
+  return useName ? process.env[useName] : undefined;
 }

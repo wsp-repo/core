@@ -1,4 +1,4 @@
-import { getEnvValue } from './getEnvValue';
+import { EnvNameType, getEnvValue } from './getEnvValue';
 
 /**
  * Возвращает параметр приведенный к массиву строк
@@ -6,9 +6,9 @@ import { getEnvValue } from './getEnvValue';
 export function getEnvArray(
   name: string,
   splitter: RegExp | string = / +/,
-  strictName?: boolean,
+  type?: EnvNameType,
 ): string[] | undefined {
-  const rawValue = getEnvValue(name, strictName);
+  const rawValue = getEnvValue(name, type);
 
   if (rawValue === undefined) return undefined;
 
