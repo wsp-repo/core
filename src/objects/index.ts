@@ -1,3 +1,2 @@
-export function blank(): string {
-    return '';
-}
+export * from './deepCopy';
+export * from './trimObject';

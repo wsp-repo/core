@@ -1,7 +1,7 @@
 {
-  "name": "@zalib/utils",
+  "name": "@zalib/core",
   "version": "1.0.1",
-  "description": "Utils",
+  "description": "Core package",
   "author": "https://github.com/wsp-repo/",
   "license": "UNLICENSED",
   "keywords": [
@@ -12,11 +12,11 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wsp-repo/utils.git"
+    "url": "git+https://github.com/wsp-repo/core.git"
   },
-  "homepage": "https://github.com/wsp-repo/utils#readme",
+  "homepage": "https://github.com/wsp-repo/core#readme",
   "bugs": {
-    "url": "https://github.com/wsp-repo/utils/issues"
+    "url": "https://github.com/wsp-repo/core/issues"
   },
   "engines": {
     "node": ">=18.15.0",
