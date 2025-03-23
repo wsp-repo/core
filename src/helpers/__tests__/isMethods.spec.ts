@@ -6,7 +6,7 @@ import {
   isObject,
   isTrue,
   isUndefined,
-} from '../isFuncs';
+} from '../isMethods';
 
 type TestIsMethods = {
   isDef: boolean;

@@ -6,52 +6,54 @@ const regExpNum = /^\d+$/;
 const regExpStr = new RegExp(
   [
     '^',
-    '(?:(?<h>\\d+)h)?',
-    '(?:(?<m>\\d+)m)?',
-    '(?:(?<s>\\d+)s)?',
-    '(?:(?<ms>\\d+)ms)?',
+    '(?:(?<gb>\\d+)gb?)?',
+    '(?:(?<mb>\\d+)mb?)?',
+    '(?:(?<kb>\\d+)kb?)?',
+    '(?:(?<b>\\d+)b)?',
     '$',
   ].join('(?:[ ]*)'),
   'i',
 );
 const regExpPos = /[1-9]/;
 
-const msInSec = 1000;
-const msInMin = 60 * msInSec;
-const msInHour = 60 * msInMin;
+const bytesInKb = 1024;
+const bytesInMb = 1024 * bytesInKb;
+const bytesInGb = 1024 * bytesInMb;
 
 enum Values {
-  MinCeil = 'MinCeil',
-  MinFloat = 'MinFloat',
-  SecCeil = 'SecCeil',
-  SecFloat = 'SecFloat',
+  GbCeil = 'GbCeil',
+  GbFloat = 'GbFloat',
+  KbCeil = 'KbCeil',
+  KbFloat = 'KbFloat',
+  MbCeil = 'MbCeil',
+  MbFloat = 'MbFloat',
 }
 
-export class Timespan {
-  private ms!: number;
+export class FileSize {
+  private bytes: number;
 
   private values: Partial<Record<Values, number>> = {};
 
   constructor(value: string | number) {
-    if (!Timespan.isValid(value)) {
+    if (!FileSize.isValid(value)) {
       throw new Error('Incorrect value');
     }
 
     const strValue = String(value).trim();
 
     if (typeof value === 'number') {
-      this.ms = value;
+      this.bytes = value;
     } else if (strValue.match(regExpNum)) {
-      this.ms = Number(value);
+      this.bytes = Number(value);
     } else {
       const match = strValue.match(regExpStr);
-      const { h, m, s, ms } = match?.groups || {};
+      const { gb, mb, kb, b } = match?.groups || {};
 
-      this.ms =
-        (h ? Number(h) * msInHour : 0) +
-        (m ? Number(m) * msInMin : 0) +
-        (s ? Number(s) * msInSec : 0) +
-        (Number(ms) || 0);
+      this.bytes =
+        (gb ? Number(gb) * bytesInGb : 0) +
+        (mb ? Number(mb) * bytesInMb : 0) +
+        (kb ? Number(kb) * bytesInKb : 0) +
+        (Number(b) || 0);
     }
   }
 
@@ -73,28 +75,37 @@ export class Timespan {
   }
 
   /**
-   * Возвращает время в минутах
+   * Возвращает размер в гигабайтах
    */
-  public toMin(ceil?: boolean): number {
+  public toGb(ceil?: boolean): number {
     return ceil
-      ? this.getCeil(Values.MinCeil, msInMin)
-      : this.getFloat(Values.MinFloat, msInMin);
+      ? this.getCeil(Values.GbCeil, bytesInGb)
+      : this.getFloat(Values.GbFloat, bytesInGb);
   }
 
   /**
-   * Возвращает время в секундах
+   * Возвращает размер в мегабайтах
    */
-  public toSec(ceil?: boolean): number {
+  public toMb(ceil?: boolean): number {
     return ceil
-      ? this.getCeil(Values.SecCeil, msInSec)
-      : this.getFloat(Values.SecFloat, msInSec);
+      ? this.getCeil(Values.MbCeil, bytesInMb)
+      : this.getFloat(Values.MbFloat, bytesInMb);
   }
 
   /**
-   * Возвращает время в милисекундах
+   * Возвращает размер в килобайтах
    */
-  public toMs(): number {
-    return this.ms;
+  public toKb(ceil?: boolean): number {
+    return ceil
+      ? this.getCeil(Values.KbCeil, bytesInKb)
+      : this.getFloat(Values.KbFloat, bytesInKb);
+  }
+
+  /**
+   * Возвращает размер в байтах
+   */
+  public toBytes(): number {
+    return this.bytes;
   }
 
   /**
@@ -102,7 +113,7 @@ export class Timespan {
    */
   private getFloat(keyValue: Values, divider: number): number {
     if (isUndefined(this.values[keyValue])) {
-      const intValue = Math.ceil((1000 * this.ms) / divider);
+      const intValue = Math.ceil((1000 * this.bytes) / divider);
 
       this.values[keyValue] = intValue / 1000;
     }
@@ -115,7 +126,7 @@ export class Timespan {
    */
   private getCeil(keyValue: Values, divider: number): number {
     if (isUndefined(this.values[keyValue])) {
-      this.values[keyValue] = Math.ceil(this.ms / divider);
+      this.values[keyValue] = Math.ceil(this.bytes / divider);
     }
 
     return this.values[keyValue];

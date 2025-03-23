@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable sort-keys */
 
-import { deepCopy, trimObject } from '../objFuncs';
+import { trimObject } from '../trimObject';
 
 describe('Helpers object functions', () => {
   const date = new Date();
@@ -33,16 +32,5 @@ describe('Helpers object functions', () => {
 
     expect(trimObject(value)).toEqual(trimmedWithNull);
     expect(trimObject(value, true)).toEqual(trimmedNotNull);
-  });
-
-  it('deepCopy', () => {
-    const copy = deepCopy(value);
-
-    expect(copy).toEqual(value);
-
-    const changed = deepCopy(value);
-    Object.assign(changed, { num: 98765, str: 'update' });
-
-    expect(copy).not.toEqual(changed);
   });
 });
