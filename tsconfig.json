@@ -21,7 +21,7 @@
     "noUnusedParameters": true,
     "outDir": "./dist",
     "paths": {
-      "*": ["node_modules/*"]
+      "*": ["./node_modules/*"]
     },
     "pretty": true,
     "removeComments": true,
@@ -30,10 +30,19 @@
     "sourceMap": true,
     "strict": true,
     "target": "ES2022",
-    "typeRoots": ["./node_modules/@types"],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "useDefineForClassFields": false,
     "useUnknownInCatchVariables": false
   },
-  "include": ["./src/**/*"],
-  "exclude": ["./node_modules", "./dist", "./reports"]
+  "include": [
+    "./src",
+    "./examples"
+  ],
+  "exclude": [
+    "./node_modules",
+    "./dist",
+    "./reports"
+  ]
 }

@@ -12,7 +12,7 @@ module.exports = {
       files: ['*.ts'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
-        include: ['./src/**/*.ts'],
+        include: ['./src/**/*.ts', './examples/**/*.ts'],
         project: './tsconfig.json',
       },
     },
