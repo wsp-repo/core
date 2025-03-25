@@ -24,6 +24,16 @@ const TESTS_SUCCESS: TestSuccess[] = [
     mbCeil: 0,
     mbFloat: 0,
   },
+  {
+    bytes: 0,
+    gbCeil: 0,
+    gbFloat: 0,
+    input: '0kb',
+    kbCeil: 0,
+    kbFloat: 0,
+    mbCeil: 0,
+    mbFloat: 0,
+  },
 ];
 
 describe('Helpers checkers is...', () => {

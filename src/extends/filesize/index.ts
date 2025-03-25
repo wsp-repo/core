@@ -14,7 +14,6 @@ const regExpStr = new RegExp(
   ].join('(?:[ ]*)'),
   'i',
 );
-const regExpPos = /[1-9]/;
 
 const bytesInKb = 1024;
 const bytesInMb = 1024 * bytesInKb;
@@ -69,9 +68,7 @@ export class FileSize {
       return Number(value) >= 0;
     }
 
-    // prettier-ignore
-    return Boolean(strValue.match(regExpStr))
-      && Boolean(strValue.match(regExpPos));
+    return Boolean(strValue.match(regExpStr));
   }
 
   /**

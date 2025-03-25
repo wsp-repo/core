@@ -14,13 +14,14 @@ const regExpStr = new RegExp(
   ].join('(?:[ ]*)'),
   'i',
 );
-const regExpPos = /[1-9]/;
 
 const msInSec = 1000;
 const msInMin = 60 * msInSec;
 const msInHour = 60 * msInMin;
 
 enum Values {
+  HourCeil = 'HourCeil',
+  HourFloat = 'HourFloat',
   MinCeil = 'MinCeil',
   MinFloat = 'MinFloat',
   SecCeil = 'SecCeil',
@@ -67,9 +68,16 @@ export class Timespan {
       return Number(value) >= 0;
     }
 
-    // prettier-ignore
-    return Boolean(strValue.match(regExpStr))
-      && Boolean(strValue.match(regExpPos));
+    return Boolean(strValue.match(regExpStr));
+  }
+
+  /**
+   * Возвращает время в часах
+   */
+  public toHour(ceil?: boolean): number {
+    return ceil
+      ? this.getCeil(Values.HourCeil, msInHour)
+      : this.getFloat(Values.HourFloat, msInHour);
   }
 
   /**
