@@ -4,11 +4,11 @@ import { fsStatSafe, getRootPath } from '../fsMethods';
 
 describe('Helpers checkers is...', () => {
   it('fsStatSafe', () => {
-    expect(fsStatSafe(__filename)?.isFile()).toEqual(true);
-    expect(fsStatSafe(__dirname)?.isDirectory()).toEqual(true);
+    expect(fsStatSafe(__filename)?.isFile()).toBe(true);
+    expect(fsStatSafe(__dirname)?.isDirectory()).toBe(true);
 
     const throwPath = resolve(__dirname, 'throwDir');
-    expect(fsStatSafe(throwPath)).toEqual(null);
+    expect(fsStatSafe(throwPath)).toBeNull();
   });
 
   it('getRootPath', () => {

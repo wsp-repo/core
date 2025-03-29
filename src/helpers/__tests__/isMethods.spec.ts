@@ -20,7 +20,9 @@ const cls = new (class Test {
 
   public isUndef?: string;
 
-  public method(): void {}
+  public method(): void {
+    process.cwd();
+  }
 })();
 
 describe('Helpers checkers is...', () => {
@@ -35,7 +37,9 @@ describe('Helpers checkers is...', () => {
       isDef: true,
       isFunc: true,
       isObj: false,
-      value: () => {},
+      value: () => {
+        process.cwd();
+      },
     },
     { isDef: true, isFunc: false, isObj: false, value: null },
     { isDef: false, isFunc: false, isObj: false, value: undefined },
