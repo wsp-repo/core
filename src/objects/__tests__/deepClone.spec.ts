@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable sort-keys */
 
-import { deepCopy } from '../deepCopy';
+import { deepClone } from '../deepClone';
 
 describe('Helpers object functions', () => {
   const date = new Date();
@@ -15,14 +15,14 @@ describe('Helpers object functions', () => {
     undef: undefined,
   };
 
-  it('deepCopy', () => {
-    const copy = deepCopy(value);
+  it('deepClone', () => {
+    const clone = deepClone(value);
 
-    expect(copy).toEqual(value);
+    expect(clone).toEqual(value);
 
-    const changed = deepCopy(value);
+    const changed = deepClone(value);
     Object.assign(changed, { num: 98765, str: 'update' });
 
-    expect(copy).not.toEqual(changed);
+    expect(clone).not.toEqual(changed);
   });
 });

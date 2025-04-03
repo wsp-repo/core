@@ -32,6 +32,9 @@
     "prebuild": "rimraf dist",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint",
+    "release:major": "npm version major",
+    "release:minor": "npm version minor",
+    "release:patch": "npm version patch",
     "test": "jest --config ./jest.unit.js"
   },
   "devDependencies": {
