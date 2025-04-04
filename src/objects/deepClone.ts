@@ -4,7 +4,7 @@ import { isDefined, isObject } from '../helpers';
  * Возвращает скопированный объект/массив
  * - используется глубокое копирование данных
  */
-export function deepCopy<T>(value: T, notTrim?: boolean): T {
+export function deepClone<T>(value: T, notTrim?: boolean): T {
   if (!value) return value;
 
   if (Array.isArray(value)) {
@@ -12,7 +12,7 @@ export function deepCopy<T>(value: T, notTrim?: boolean): T {
 
     for (let i = 0; i < value.length; i++) {
       if (isDefined(value[i]) || notTrim) {
-        result[i] = deepCopy(value[i]);
+        result[i] = deepClone(value[i]);
       }
     }
 
@@ -24,7 +24,7 @@ export function deepCopy<T>(value: T, notTrim?: boolean): T {
 
     for (const key in value) {
       if (isDefined(value[key]) || notTrim) {
-        result[key] = deepCopy(value[key]);
+        result[key] = deepClone(value[key]);
       }
     }
 
