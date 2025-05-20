@@ -1,4 +1,4 @@
-/* eslint-disable no-empty */
+/* eslint-di sable no-empty */
 
 import { Stats, statSync } from 'fs';
 import { platform } from 'os';
@@ -10,6 +10,7 @@ import { dirname, resolve } from 'path';
 export function fsStatSafe(path: string): Stats | null {
   try {
     return statSync(path);
+    // eslint-disable-next-line
   } catch (e) {}
 
   return null;
