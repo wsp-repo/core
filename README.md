@@ -1,9 +1,9 @@
-# Package @zalib/utils
+# Package @zalib/core
 
 ## Getting started
 
 ```
-npm i @zalib/utils
+npm i @zalib/core
 ```
 
 ## Methods

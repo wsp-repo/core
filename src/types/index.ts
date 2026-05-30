@@ -1,2 +1,2 @@
-export * from './common';
-export * from './deepMerge';
+export * from './deepPartial';
+export * from './response';
