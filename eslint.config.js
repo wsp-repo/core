@@ -1,9 +1,13 @@
-const { defineConfig } = require('eslint/config');
+const {
+  defineConfig,
+  getNodeJsConfig,
+  getNodeTsConfig,
+  getTestsConfig,
+} = require('@zalib/devkit/eslint');
 
 module.exports = defineConfig([
-  {
-    ignores: ['**/node_modules/**', '**/dist/**'],
-  },
-  require('@zalib/linter/eslint/node')(),
-  require('@zalib/linter/eslint/node-ts')(),
+  { ignores: ['**/node_modules/**', '**/dist/**'] },
+  ...getNodeJsConfig(),
+  ...getNodeTsConfig(),
+  ...getTestsConfig(),
 ]);

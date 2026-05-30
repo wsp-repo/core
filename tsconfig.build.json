@@ -1,13 +1,12 @@
 {
   "extends": "./tsconfig.json",
-  "include": [
-    "./src"
-  ],
+  "compilerOptions": {
+    "noEmitOnError": true,
+    "incremental": false
+  },
   "exclude": [
+    "./**/*spec.ts",
     "./node_modules",
-    "./dist",
-    "./reports",
-    "./examples",
-    "./**/*spec.ts"
+    "./dist"
   ]
 }

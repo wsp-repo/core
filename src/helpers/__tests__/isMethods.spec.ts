@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable sort-keys */
-import {
-  isDefined,
-  isFunction,
-  isObject,
-  isTrue,
-  isUndefined,
-} from '../isMethods';
+
+import { describe, it, expect } from 'vitest';
+
+import { isDefined } from '../isDefined';
+import { isError } from '../isError';
+import { isFunction } from '../isFunction';
+import { isObject } from '../isObject';
+import { isTrue } from '../isTrue';
+import { isUndefined } from '../isUndefined';
 
 type TestIsMethods = {
   isDef: boolean;
@@ -14,6 +15,8 @@ type TestIsMethods = {
   isObj: boolean;
   value: unknown;
 };
+
+class ExtError extends Error {}
 
 const cls = new (class Test {
   public isDef = 33;
@@ -87,5 +90,20 @@ describe('Helpers checkers is...', () => {
   ];
   it.each(isTrueTests)('isTrue', ({ value, result }) => {
     expect(isTrue(value)).toEqual(result);
+  });
+
+  it('isError', () => {
+    const not = { property: 'Custom property' };
+    const obj = { message: 'Obj error', stack: 'Stack data' };
+    const err = new Error('Base error');
+    const ext = new ExtError('Ext error');
+
+    expect(isError(not)).toBe(false);
+    expect(isError(obj)).toBe(true);
+    expect(isError(obj, true)).toBe(false);
+    expect(isError(err)).toBe(true);
+    expect(isError(err, true)).toBe(true);
+    expect(isError(ext)).toBe(true);
+    expect(isError(ext, true)).toBe(true);
   });
 });
