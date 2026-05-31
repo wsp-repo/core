@@ -9,7 +9,7 @@ const isLeapYear = (year: number): boolean => {
   return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 };
 
-export const dateFormat = (value: string): boolean => {
+export function dateFormat(value: string): boolean {
   const matches: string[] | null = DATE.exec(value);
 
   if (!matches) return false;
@@ -26,13 +26,10 @@ export const dateFormat = (value: string): boolean => {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     day <= (month === 2 && isLeapYear(year) ? 29 : DAYS[month])
   );
-};
+}
 
 /*_ Проверяет строку на соответствие формату времени, с опциональной строгой проверкой таймзоны _*/
-export const timeFormat = (
-  value: string,
-  strictTimeZone?: boolean,
-): boolean => {
+export function timeFormat(value: string, strictTimeZone?: boolean): boolean {
   const matches: RegExpExecArray | null = REGEXP_TIME.exec(value);
 
   if (!matches) return false;
@@ -61,16 +58,16 @@ export const timeFormat = (
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     sec < 61
   );
-};
+}
 
 /*_ Регулярка для разделения даты и времени - ISO 8601 требует только 'T' разделитель _*/
 const dateTimeSplitRegex = /T/;
 
 /*_ Проверяет строку на соответствие формату даты-времени, с опциональной строгой проверкой таймзоны _*/
-export const dateTimeFormat = (
+export function dateTimeFormat(
   value: string,
   strictTimeZone?: boolean,
-): boolean => {
+): boolean {
   const dateTime: string[] = value.split(dateTimeSplitRegex);
 
   return (
@@ -79,4 +76,4 @@ export const dateTimeFormat = (
     dateFormat(dateTime[0]) &&
     timeFormat(dateTime[1], strictTimeZone)
   );
-};
+}

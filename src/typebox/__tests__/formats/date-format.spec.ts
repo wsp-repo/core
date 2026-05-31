@@ -3,11 +3,11 @@ import { describe, it, expect } from 'vitest';
 
 import { TypeboxValidator } from '../../validator';
 
-import { TypeboxFormats } from '../../types';
+import { TFormats } from '../../types';
 
-describe('date-format', () => {
+describe('Typebox - проверка формата [TFormats.Date]', () => {
   const dateValidator = new TypeboxValidator(
-    Type.String({ format: TypeboxFormats.Date }),
+    Type.String({ format: TFormats.Date }),
   );
 
   it.each([

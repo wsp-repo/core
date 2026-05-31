@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 
 import { TypeboxValidator } from '../../validator';
 
-describe('TypeboxValidator - default options', () => {
+describe('Typebox - опции по умолчанию [TypeboxOptions]', () => {
   const schema = Type.Object({
     age: Type.Number(),
     extra: Type.Optional(Type.String()),

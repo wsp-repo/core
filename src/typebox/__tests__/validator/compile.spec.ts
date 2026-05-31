@@ -2,7 +2,7 @@ import type { Static } from '@sinclair/typebox';
 import { Type } from '@sinclair/typebox';
 import { describe, it, expect } from 'vitest';
 
-import { TypeboxValidator } from '../../validator';
+import { createValidator } from '../../validator';
 
 const testSchema = Type.Object(
   {
@@ -28,20 +28,18 @@ const errorValue: TestType = {
   string: '12345',
 };
 
-describe('TypeboxValidator - check', () => {
+describe('Typebox - валидация [validator.compile(...)]', () => {
+  const validator = createValidator(testSchema);
+
   it('Create typebox validator', () => {
-    expect(new TypeboxValidator(testSchema)).toBeDefined();
+    expect(validator).toBeDefined();
   });
 
   it('Success validate', () => {
-    const validator = new TypeboxValidator(testSchema);
-
     expect(validator.compile(successValue)).toEqual(successValue);
   });
 
   it('Error fixed options', () => {
-    const validator = new TypeboxValidator(testSchema);
-
     expect(() => validator.compile(errorValue)).toThrow();
   });
 });

@@ -1,4 +1,4 @@
-export type TypeboxValidationOptions = {
+export type TypeboxOptions = {
   clean?: boolean;
   convert?: boolean;
   decode?: boolean;

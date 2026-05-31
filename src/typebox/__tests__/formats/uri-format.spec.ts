@@ -3,11 +3,11 @@ import { describe, it, expect } from 'vitest';
 
 import { TypeboxValidator } from '../../validator';
 
-import { TypeboxFormats } from '../../types';
+import { TFormats } from '../../types';
 
-describe('TypeBox URI format validation', () => {
+describe('Typebox - проверка формата [TFormats.Uri]', () => {
   const uriValidator = new TypeboxValidator(
-    Type.String({ format: TypeboxFormats.Uri }),
+    Type.String({ format: TFormats.Uri }),
   );
 
   describe('valid URI addresses', () => {

@@ -3,11 +3,11 @@ import { describe, it, expect } from 'vitest';
 
 import { TypeboxValidator } from '../../validator';
 
-import { TypeboxFormats } from '../../types';
+import { TFormats } from '../../types';
 
-describe('TypeBox Email format validation', () => {
+describe('TypeBox - проверка формата [TFormats.Email]', () => {
   const emailValidator = new TypeboxValidator(
-    Type.String({ format: TypeboxFormats.Email }),
+    Type.String({ format: TFormats.Email }),
   );
 
   describe('valid email addresses', () => {

@@ -3,11 +3,11 @@ import { describe, it, expect } from 'vitest';
 
 import { TypeboxValidator } from '../../validator';
 
-import { TypeboxFormats } from '../../types';
+import { TFormats } from '../../types';
 
-describe('TypeBox IPv4 format validation', () => {
+describe('Typebox - проверка формата [TFormats.Ipv4]', () => {
   const ipv4Validator = new TypeboxValidator(
-    Type.String({ format: TypeboxFormats.Ipv4 }),
+    Type.String({ format: TFormats.Ipv4 }),
   );
 
   describe('valid IPv4 addresses', () => {
