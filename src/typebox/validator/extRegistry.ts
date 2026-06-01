@@ -12,7 +12,7 @@ import {
   urlFormat,
   uuidFormat,
 } from '../formats';
-import type { TStringEnum, TStringUnion } from '../schemas';
+import { TStringEnum, TStringUnion } from '../schemas';
 
 import { TFormats } from '../types';
 

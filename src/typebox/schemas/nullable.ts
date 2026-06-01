@@ -1,4 +1,4 @@
-import type { TNull, TSchema, TUnion } from '@sinclair/typebox';
+import { TNull, TSchema, TUnion } from '@sinclair/typebox';
 import { Type } from '@sinclair/typebox';
 
 /**

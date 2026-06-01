@@ -1,4 +1,4 @@
-import type { CoreError } from '../errors';
+import { CoreError } from '../errors';
 
 export type SuccessResponse<Result = never> = [Result] extends [never]
   ? { result?: never; success: true }

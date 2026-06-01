@@ -1,7 +1,7 @@
-import type { ValueError } from '@sinclair/typebox/errors';
+import { ValueError } from '@sinclair/typebox/errors';
 import { ValueErrorType } from '@sinclair/typebox/errors';
 
-import type { ValidationDetail } from 'src/errors';
+import { ValidationDetail } from 'src/errors';
 import { ValidationError } from 'src/errors';
 import { isEmpty } from 'src/helpers';
 
