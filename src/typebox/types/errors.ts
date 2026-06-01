@@ -5,7 +5,7 @@ import type { ValidationDetail } from 'src/errors';
 import { ValidationError } from 'src/errors';
 import { isEmpty } from 'src/helpers';
 
-export class TypeboxValidationError extends ValidationError {
+export class TypeboxError extends ValidationError {
   constructor(
     public readonly errors: ValueError[] = [],
     details?: ValidationDetail[],

@@ -3,9 +3,9 @@ import { describe, it, expect } from 'vitest';
 
 import { TypeboxValidator } from '../../validator';
 
-import { TypeboxValidationError } from '../../types';
+import { TypeboxError } from '../../types';
 
-describe('TypeboxValidator - options param behaviour', () => {
+describe('Typebox - опции валидации [TypeboxOptions]', () => {
   describe('clean option', () => {
     const schema = Type.Object(
       {
@@ -40,7 +40,7 @@ describe('TypeboxValidator - options param behaviour', () => {
           extraProperty: 'should cause error',
           name: 'John',
         }),
-      ).toThrow(TypeboxValidationError);
+      ).toThrow(TypeboxError);
     });
   });
 
@@ -64,9 +64,7 @@ describe('TypeboxValidator - options param behaviour', () => {
       const validator = new TypeboxValidator(schema, { defaults: false });
 
       // Должно не пройти валидацию, так как name обязательно, но значение по умолчанию не применено
-      expect(() => validator.compile({ age: 25 })).toThrow(
-        TypeboxValidationError,
-      );
+      expect(() => validator.compile({ age: 25 })).toThrow(TypeboxError);
     });
   });
 
@@ -98,7 +96,7 @@ describe('TypeboxValidator - options param behaviour', () => {
           age: '25', // должно не пройти - строка вместо числа
           isActive: true,
         }),
-      ).toThrow(TypeboxValidationError);
+      ).toThrow(TypeboxError);
     });
   });
 

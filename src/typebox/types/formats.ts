@@ -1,4 +1,4 @@
-export enum TypeboxFormats {
+export enum TFormats {
   Date = 'date',
   DateTime = 'datetime',
   Email = 'email',

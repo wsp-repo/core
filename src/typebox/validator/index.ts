@@ -1,5 +1,4 @@
-import './formats';
-import './schemas';
+import './extRegistry'; // регистрация расширений
 
 import type { Static, TSchema } from '@sinclair/typebox';
 import { TypeGuard } from '@sinclair/typebox';
@@ -7,10 +6,10 @@ import type { TypeCheck } from '@sinclair/typebox/compiler';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { Value } from '@sinclair/typebox/value';
 
-import type { TypeboxSchema, TypeboxValidationOptions } from '../types';
-import { TypeboxValidationError } from '../types';
+import type { TypeboxOptions } from '../types';
+import { TypeboxError } from '../types';
 
-const defaultOptions: TypeboxValidationOptions = {
+const defaultOptions: TypeboxOptions = {
   clean: true,
   convert: false,
   decode: false,
@@ -20,11 +19,11 @@ const defaultOptions: TypeboxValidationOptions = {
 
 export class TypeboxValidator<T extends TSchema> {
   private readonly checker: TypeCheck<TSchema>;
-  private readonly options: TypeboxValidationOptions;
+  private readonly options: TypeboxOptions;
 
   constructor(
     private readonly schema: T,
-    options?: TypeboxValidationOptions,
+    options?: TypeboxOptions,
   ) {
     if (!TypeGuard.IsSchema(schema)) {
       throw new TypeError('Invalid schema provided');
@@ -62,7 +61,7 @@ export class TypeboxValidator<T extends TSchema> {
       if (!this.checker.Check(value)) {
         const errors = [...this.checker.Errors(value)];
 
-        throw new TypeboxValidationError(errors);
+        throw new TypeboxError(errors);
       }
 
       if (this.options.decode) {
@@ -71,18 +70,18 @@ export class TypeboxValidator<T extends TSchema> {
 
       return value;
     } catch (error) {
-      if (error instanceof TypeboxValidationError) {
+      if (error instanceof TypeboxError) {
         throw error;
       }
 
-      throw new TypeboxValidationError([], [{ message: error.message }]);
+      throw new TypeboxError([], [{ message: error.message }]);
     }
   }
 }
 
-export function createValidator<Schema extends TypeboxSchema>(
+export function createValidator<Schema extends TSchema>(
   schema: Schema,
-  options?: TypeboxValidationOptions,
+  options?: TypeboxOptions,
 ): TypeboxValidator<Schema> {
   return new TypeboxValidator<Schema>(schema, options);
 }

@@ -1,14 +1,14 @@
 import { Type } from '@sinclair/typebox';
 import { describe, it, expect } from 'vitest';
 
-import { TypeboxValidator } from '../../validator';
+import { createValidator } from '../../validator';
 
-describe('TypeboxValidator - constructor', () => {
+describe('Typebox - фабрика валидатора [createValidator(...)]', () => {
   it('should throw TypeError when invalid schema is provided', () => {
     const invalidSchema = { invalid: 'schema' } as any;
 
-    expect(() => new TypeboxValidator(invalidSchema)).toThrow(TypeError);
-    expect(() => new TypeboxValidator(invalidSchema)).toThrow(
+    expect(() => createValidator(invalidSchema)).toThrow(TypeError);
+    expect(() => createValidator(invalidSchema)).toThrow(
       'Invalid schema provided',
     );
   });
@@ -16,6 +16,6 @@ describe('TypeboxValidator - constructor', () => {
   it('should accept valid TypeBox schema', () => {
     const validSchema = Type.String();
 
-    expect(() => new TypeboxValidator(validSchema)).not.toThrow();
+    expect(() => createValidator(validSchema)).not.toThrow();
   });
 });
