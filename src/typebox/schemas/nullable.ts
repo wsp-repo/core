@@ -1,5 +1,4 @@
-import { TNull, TSchema, TUnion } from '@sinclair/typebox';
-import { Type } from '@sinclair/typebox';
+import { TNull, TSchema, TUnion, Type  } from '@sinclair/typebox';
 
 /**
  * Создает схему для значения, которое может быть null

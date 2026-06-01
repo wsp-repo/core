@@ -1,5 +1,4 @@
-import { Static } from '@sinclair/typebox';
-import { Type } from '@sinclair/typebox';
+import { Static, Type  } from '@sinclair/typebox';
 import { describe, it, expect } from 'vitest';
 
 import { createValidator } from '../../validator';

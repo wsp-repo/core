@@ -1,5 +1,4 @@
-import { TypeRegistry } from '@sinclair/typebox';
-import { FormatRegistry } from '@sinclair/typebox';
+import { TypeRegistry, FormatRegistry  } from '@sinclair/typebox';
 
 import {
   dateFormat,

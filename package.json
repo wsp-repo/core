@@ -62,7 +62,7 @@
     "@sinclair/typemap": "0.10.1"
   },
   "devDependencies": {
-    "@zalib/devkit": "^5.9.4",
+    "@zalib/devkit": "^5.9.5",
     "tsc-alias": "1.8.17"
   },
   "lint-staged": {

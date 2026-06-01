@@ -1,5 +1,4 @@
-import { SchemaOptions, TSchema } from '@sinclair/typebox';
-import { Kind } from '@sinclair/typebox';
+import { SchemaOptions, TSchema, Kind  } from '@sinclair/typebox';
 
 export interface TStringEnum<T extends Record<string, string>> extends TSchema {
   enum: T[keyof T][];
