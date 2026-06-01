@@ -1,10 +1,10 @@
 import './extRegistry'; // регистрация расширений
 
-import { Static, TSchema, TypeGuard  } from '@sinclair/typebox';
-import { TypeCheck, TypeCompiler  } from '@sinclair/typebox/compiler';
+import { Static, TSchema, TypeGuard } from '@sinclair/typebox';
+import { TypeCheck, TypeCompiler } from '@sinclair/typebox/compiler';
 import { Value } from '@sinclair/typebox/value';
 
-import { TypeboxOptions, TypeboxError  } from '../types';
+import { TypeboxOptions, TypeboxError } from '../types';
 
 const defaultOptions: TypeboxOptions = {
   clean: true,
