@@ -1,5 +1,4 @@
-import { TypeRegistry } from '@sinclair/typebox';
-import { FormatRegistry } from '@sinclair/typebox';
+import { TypeRegistry, FormatRegistry } from '@sinclair/typebox';
 
 import {
   dateFormat,
@@ -12,7 +11,7 @@ import {
   urlFormat,
   uuidFormat,
 } from '../formats';
-import type { TStringEnum, TStringUnion } from '../schemas';
+import { TStringEnum, TStringUnion } from '../schemas';
 
 import { TFormats } from '../types';
 

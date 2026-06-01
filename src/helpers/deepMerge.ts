@@ -5,7 +5,7 @@ import { isArray } from './isArray';
 import { isDefined } from './isDefined';
 import { isObject } from './isObject';
 
-import type { DeepPartial } from '../types';
+import { DeepPartial } from '../types';
 
 export enum MergeArray {
   Append = 'append',

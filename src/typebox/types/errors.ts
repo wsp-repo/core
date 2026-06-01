@@ -1,8 +1,6 @@
-import type { ValueError } from '@sinclair/typebox/errors';
-import { ValueErrorType } from '@sinclair/typebox/errors';
+import { ValueError, ValueErrorType } from '@sinclair/typebox/errors';
 
-import type { ValidationDetail } from 'src/errors';
-import { ValidationError } from 'src/errors';
+import { ValidationDetail, ValidationError } from 'src/errors';
 import { isEmpty } from 'src/helpers';
 
 export class TypeboxError extends ValidationError {
