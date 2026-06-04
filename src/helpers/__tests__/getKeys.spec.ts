@@ -1,8 +1,10 @@
+import { describe, it, expect } from 'vitest';
+
 import { getKeys } from '../getKeys';
 
 describe('Helpers object functions', () => {
   it('getKeys (object)', () => {
-    const value: any = {
+    const value: Record<string, unknown> = {
       num: 12345,
       str: 'string',
       date: new Date(),

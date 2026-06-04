@@ -1,9 +1,11 @@
+import { describe, it, expect } from 'vitest';
+
 import { deepClone } from '../deepClone';
 
 describe('Helpers object functions', () => {
   const date = new Date();
 
-  const value: any = {
+  const value: Record<string, unknown> = {
     bool: true,
     date: new Date(date),
     null: null,

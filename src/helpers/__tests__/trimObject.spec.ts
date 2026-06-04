@@ -1,9 +1,11 @@
+import { describe, it, expect } from 'vitest';
+
 import { trimObject } from '../trimObject';
 
 describe('Helpers object functions', () => {
   const date = new Date();
 
-  const value: any = {
+  const value: Record<string, unknown> = {
     bool: true,
     date: new Date(date),
     null: null,
@@ -13,14 +15,14 @@ describe('Helpers object functions', () => {
   };
 
   it('trimObject', () => {
-    const trimmedWithNull: any = {
+    const trimmedWithNull: Record<string, unknown> = {
       num: 12345,
       str: 'string',
       date: new Date(date),
       bool: true,
       null: null,
     };
-    const trimmedNotNull: any = {
+    const trimmedNotNull: Record<string, unknown> = {
       num: 12345,
       str: 'string',
       date: new Date(date),
