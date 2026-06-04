@@ -10,6 +10,8 @@ import {
   uriFormat,
   urlFormat,
   uuidFormat,
+  byteSizeFormat,
+  timestampFormat,
 } from '../formats';
 import { TStringEnum, TStringUnion } from '../schemas';
 
@@ -29,6 +31,7 @@ TypeRegistry.Set(
   },
 );
 
+FormatRegistry.Set(TFormats.ByteSize, byteSizeFormat);
 FormatRegistry.Set(TFormats.Email, emailFormat);
 FormatRegistry.Set(TFormats.Uuid, uuidFormat);
 FormatRegistry.Set(TFormats.Url, urlFormat);
@@ -37,4 +40,5 @@ FormatRegistry.Set(TFormats.Ipv4, ipv4Format);
 FormatRegistry.Set(TFormats.Ipv6, ipv6Format);
 FormatRegistry.Set(TFormats.Date, dateFormat);
 FormatRegistry.Set(TFormats.Time, timeFormat);
+FormatRegistry.Set(TFormats.Timestamp, timestampFormat);
 FormatRegistry.Set(TFormats.DateTime, dateTimeFormat);

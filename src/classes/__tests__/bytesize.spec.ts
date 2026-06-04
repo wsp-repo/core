@@ -40,8 +40,8 @@ const TESTS_SUCCESS: TestSuccess[] = [
 
 const TEST_TO_STRING: { bytes: number; result: string }[] = [
   { bytes: 123, result: '123b' },
-  { bytes: 1234, result: '1.2Kb' },
-  { bytes: 1234567, result: '1.2Mb' },
+  { bytes: 1234, result: '1Kb 210b' },
+  { bytes: 1234567, result: '1Mb 181Kb 647b' },
 ];
 
 describe('Extend ByteSize', () => {
