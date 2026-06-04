@@ -71,7 +71,9 @@ export class TypeboxValidator<T extends TSchema> {
         throw error;
       }
 
-      throw new TypeboxError([], [{ message: error.message }]);
+      const { message } = error as Error;
+
+      throw new TypeboxError([], [{ message }]);
     }
   }
 }
