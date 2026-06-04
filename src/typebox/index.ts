@@ -19,10 +19,10 @@ type ExtendedType = typeof OriginalType & {
 };
 
 /* prettier-ignore */
-export const Type: ExtendedType = Object.assign(
+export const Type = Object.assign(
   Object.create(OriginalType),
   {
     ByteSize: TByteSize,
     Timestamp: TTimestamp,
   },
-);
+) as ExtendedType;
