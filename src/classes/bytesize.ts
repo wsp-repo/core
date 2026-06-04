@@ -108,27 +108,47 @@ export class ByteSize {
   /**
    * Возвращает строковое представление
    */
-  public toString(digits = 1): string {
-    if (this.bytes > bytesInGb) {
-      return `${this.toFixed(this.toGb(), digits)}Gb`;
+  public toString(): string {
+    if (!this.bytes) return '0';
+
+    let bytes = this.bytes;
+    const result: string[] = [];
+
+    if (bytes > bytesInGb) {
+      const intGb = Math.floor(bytes / bytesInGb);
+
+      if (intGb) {
+        bytes = bytes - intGb * bytesInGb;
+
+        result.push(`${intGb}Gb`);
+      }
     }
 
-    if (this.bytes > bytesInMb) {
-      return `${this.toFixed(this.toMb(), digits)}Mb`;
+    if (bytes > bytesInMb) {
+      const intMb = Math.floor(bytes / bytesInMb);
+
+      if (intMb > 0) {
+        bytes = bytes - intMb * bytesInMb;
+
+        result.push(`${intMb}Mb`);
+      }
     }
 
-    if (this.bytes > bytesInKb) {
-      return `${this.toFixed(this.toKb(), digits)}Kb`;
+    if (bytes > bytesInKb) {
+      const intKb = Math.floor(bytes / bytesInKb);
+
+      if (intKb > 0) {
+        bytes = bytes - intKb * bytesInKb;
+
+        result.push(`${intKb}Kb`);
+      }
     }
 
-    return `${this.bytes}b`;
-  }
+    if (bytes > 0) {
+      result.push(`${bytes}b`);
+    }
 
-  /**
-   * Выполняет округление для строкового представления
-   */
-  private toFixed(value: number, digits: number): string {
-    return value.toFixed(digits).replace(/\.0+$/, '');
+    return result.join(' ');
   }
 
   /**

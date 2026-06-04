@@ -9,7 +9,7 @@ import { TypeboxOptions, TypeboxError } from '../types';
 const defaultOptions: TypeboxOptions = {
   clean: true,
   convert: false,
-  decode: false,
+  decode: true,
   defaults: true,
   encode: false,
 };

@@ -109,6 +109,62 @@ export class Timestamp {
   }
 
   /**
+   * Возвращает строковое представление
+   */
+  public toString(): string {
+    if (!this.ms) return '0';
+
+    let ms = this.ms;
+    const result: string[] = [];
+
+    if (ms > msInDay) {
+      const intDays = Math.floor(ms / msInDay);
+
+      if (intDays) {
+        ms = ms - intDays * msInDay;
+
+        result.push(`${intDays}d`);
+      }
+    }
+
+    if (ms > msInHour) {
+      const intHours = Math.floor(ms / msInHour);
+
+      if (intHours > 0) {
+        ms = ms - intHours * msInHour;
+
+        result.push(`${intHours}h`);
+      }
+    }
+
+    if (ms > msInMin) {
+      const intMins = Math.floor(ms / msInMin);
+
+      if (intMins > 0) {
+        ms = ms - intMins * msInMin;
+
+        result.push(`${intMins}m`);
+      }
+    }
+
+    if (ms > msInSec) {
+      const intSecs = Math.floor(ms / msInSec);
+
+      if (intSecs > 0) {
+        ms = ms - intSecs * msInSec;
+
+        result.push(`${intSecs}s`);
+      }
+    }
+
+    if (ms > 0) {
+      result.push(`${ms}ms`);
+    }
+
+    return result.join(' ');
+  }
+
+  /**
    * Увеличивает значение времени
    */
   public increase(value: Timestamp | string | number): Timestamp {
