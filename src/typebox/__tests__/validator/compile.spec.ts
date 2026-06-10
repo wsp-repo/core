@@ -1,4 +1,4 @@
-import { Static, Type } from '@sinclair/typebox';
+import { StaticDecode, Type } from '@sinclair/typebox';
 import { describe, it, expect } from 'vitest';
 
 import { createValidator } from '../../validator';
@@ -17,7 +17,7 @@ const testSchema = Type.Object(
   },
 );
 
-type TestType = Static<typeof testSchema>;
+type TestType = StaticDecode<typeof testSchema>;
 
 const successValue: TestType = {
   string: '123456789012345',
