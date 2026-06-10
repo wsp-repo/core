@@ -1,6 +1,6 @@
 import './extRegistry'; // регистрация расширений
 
-import { Static, TSchema, TypeGuard } from '@sinclair/typebox';
+import { StaticDecode, TSchema, TypeGuard } from '@sinclair/typebox';
 import { TypeCheck, TypeCompiler } from '@sinclair/typebox/compiler';
 import { Value } from '@sinclair/typebox/value';
 
@@ -34,7 +34,7 @@ export class TypeboxValidator<T extends TSchema> {
    * Проводит валидацию с модификацией значения
    * ! мутирует входящее значение value
    */
-  public compile(value: unknown): Static<T> {
+  public compile(value: unknown): StaticDecode<T> {
     try {
       // не используется Value.Parse для лучшего контроля
       // шагов и отличного от базового порядка операций
