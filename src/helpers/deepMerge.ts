@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+// ToDo Не лучшее решение, в будущем подумать, как обойти
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { deepClone } from './deepClone';
@@ -26,6 +27,7 @@ export type MergeCustom = (
 export type MergeOptions = {
   mergeArray?: MergeArray | MergeCustom;
   mergePath?: string;
+  mutate?: boolean;
 };
 
 type Options = Pick<MergeOptions, 'mergePath'> &
@@ -50,7 +52,7 @@ function deepRecursive(target: any, source: any, options: Options): any {
  * Возвращает полный объект опций мержинга
  */
 function getOptions(options?: MergeOptions): Options {
-  return { mergeArray: MergeArray.Replace, ...options };
+  return { mergeArray: MergeArray.Replace, mutate: false, ...options };
 }
 
 /**
@@ -125,9 +127,11 @@ export function deepMerge<T>(
   source: DeepPartial<T>,
   options?: MergeOptions,
 ): T {
+  const opts = getOptions(options);
+
   return deepRecursive(
-    deepClone(target),
+    opts.mutate ? target : deepClone(target),
     deepClone(source),
-    getOptions(options),
+    opts,
   );
 }
