@@ -2,14 +2,14 @@ import { isFunction } from './isFunction';
 import { isObject } from './isObject';
 import { isUndefined } from './isUndefined';
 
-const specialKeys = ['__proto__'];
+const specialKeys = new Set(['__proto__']);
 
 function isExcludedKey(key: string): boolean {
   // специальные зарезервированные ключи
-  if (specialKeys.includes(key)) return true;
+  if (specialKeys.has(key)) return true;
 
-  // private декларация
-  return key[0] === '#';
+  // private декларации классов
+  return key.startsWith('#');
 }
 
 /**
