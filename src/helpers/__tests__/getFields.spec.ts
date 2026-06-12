@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
-import { getProperties } from '../index';
+import { getFields } from '../index';
 
 describe('Helpers object functions', () => {
-  it('getProperties (object)', () => {
+  it('getFields (object)', () => {
     const value: Record<string, unknown> = {
       num: 12345,
       str: 'string',
@@ -13,10 +13,10 @@ describe('Helpers object functions', () => {
     };
     const keys = ['num', 'str', 'date', 'bool', 'null'];
 
-    expect(getProperties(value).sort()).toEqual(keys.sort());
+    expect(getFields(value).sort()).toEqual(keys.sort());
   });
 
-  it('getProperties (class1)', () => {
+  it('getFields (class1)', () => {
     const value = new (class {
       public num = 12345;
       public str = 'string';
@@ -29,10 +29,10 @@ describe('Helpers object functions', () => {
     })();
     const keys = ['num', 'str', 'date', 'bool', 'null'];
 
-    expect(getProperties(value).sort()).toEqual(keys.sort());
+    expect(getFields(value).sort()).toEqual(keys.sort());
   });
 
-  it('getProperties (class2)', () => {
+  it('getFields (class2)', () => {
     const value = new (class {
       public get num(): number {
         return 12345;
@@ -56,10 +56,10 @@ describe('Helpers object functions', () => {
     })();
     const keys = ['num', 'str', 'date', 'bool', 'null'];
 
-    expect(getProperties(value).sort()).toEqual(keys.sort());
+    expect(getFields(value).sort()).toEqual(keys.sort());
   });
 
-  it('getProperties (string)', () => {
-    expect(getProperties('string' as any)).toEqual([]);
+  it('getFields (string)', () => {
+    expect(getFields('string' as any)).toEqual([]);
   });
 });

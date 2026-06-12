@@ -1,4 +1,4 @@
-import { getProperties } from './getProperties';
+import { getFields } from './getFields';
 import { isArray } from './isArray';
 import { isObject } from './isObject';
 import { isString } from './isString';
@@ -29,13 +29,7 @@ export function isEmpty(value: unknown, trim = false): boolean {
   }
 
   if (isObject(value)) {
-    const properties = getProperties(value);
-
-    if (trim && properties.length > 0) {
-      return properties.every((property) => {
-        return isUndefined(value[property]);
-      });
-    }
+    const properties = getFields(value, trim);
 
     return properties.length === 0;
   }
