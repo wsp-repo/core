@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import { isFunction } from './isFunction';
 import { isObject } from './isObject';
 import { isUndefined } from './isUndefined';
@@ -24,14 +26,17 @@ export function getFields<T extends object>(
 ): (keyof T)[] {
   if (!isObject(value)) return [];
 
-  // eslint-disable-next-line
-  const proto = Object.getPrototypeOf(value);
-  const keys = new Set([
-    ...(proto && proto !== Object.prototype
-      ? Object.getOwnPropertyNames(proto)
-      : []),
-    ...Object.keys(value),
-  ]);
+  const keys = new Set(Object.keys(value));
+
+  let proto = Object.getPrototypeOf(value);
+
+  while (proto && proto !== Object.prototype) {
+    for (const key of Object.getOwnPropertyNames(proto)) {
+      keys.add(key);
+    }
+
+    proto = Object.getPrototypeOf(proto);
+  }
 
   const result = ([...keys] as (keyof T)[]).filter((key) => {
     if (onlyDefined && isUndefined(value[key])) return false;
