@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { camelCase } from '../camelCase';
+import { camelCase } from '../index';
 
 type Test = { input: string; result: string };
 

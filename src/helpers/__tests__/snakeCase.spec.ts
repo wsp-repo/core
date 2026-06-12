@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { snakeCase } from '../snakeCase';
+import { snakeCase } from '../index';
 
 type Test = {
   snake: string;

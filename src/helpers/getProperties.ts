@@ -15,7 +15,7 @@ function propertyIgnore(value: unknown): boolean {
  * ! возвращает и private/protected свойства
  * ! исключает начинающиеся с "_" и "#"
  */
-export function getKeys<T extends object>(value?: T): (keyof T)[] {
+export function getProperties<T extends object>(value?: T): (keyof T)[] {
   if (!isObject(value)) return [];
 
   const result: (keyof T)[] = [];
@@ -34,6 +34,8 @@ export function getKeys<T extends object>(value?: T): (keyof T)[] {
 
   Object.keys(value).forEach((key) => {
     if (result.includes(key as keyof T)) return;
+
+    if (isFunction(value[key as keyof T])) return;
 
     if (propertyIgnore(key)) return;
 

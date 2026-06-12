@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 
-import { getKeys } from './getKeys';
+import { getProperties } from './getProperties';
 import { isUndefined } from './isUndefined';
 
 type DataFields<T> = {
@@ -11,7 +11,7 @@ type ClassToObject<T> = Pick<T, DataFields<T>>;
 
 /**
  * Перегоняет класс в объект с полями свойств
- * ! захватывает private/protected поля (см. getKeys)
+ * ! захватывает private/protected поля (см. getProperties)
  */
 export function toObject<T extends object>(
   value: T,
@@ -19,7 +19,7 @@ export function toObject<T extends object>(
 ): ClassToObject<T> {
   const result = {} as ClassToObject<T>;
 
-  getKeys(value).forEach((key) => {
+  getProperties(value).forEach((key) => {
     if (isUndefined(value[key])) return;
 
     if (exclude.includes(key as string)) return;

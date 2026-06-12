@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { deepClone } from '../deepClone';
+import { deepClone } from '../index';
 
 describe('Helpers object functions', () => {
   const date = new Date();
