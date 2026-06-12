@@ -2,7 +2,6 @@ export * from './camelCase';
 export * from './deepClone';
 export * from './deepMerge';
 export * from './getFields';
-export * from './getMethods';
 export * from './getType';
 export * from './isArray';
 export * from './isDefined';
