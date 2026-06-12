@@ -24,8 +24,12 @@ export function getFields<T extends object>(
 ): (keyof T)[] {
   if (!isObject(value)) return [];
 
+  // eslint-disable-next-line
+  const proto = Object.getPrototypeOf(value);
   const keys = new Set([
-    ...Object.getOwnPropertyNames(Object.getPrototypeOf(value)),
+    ...(proto && proto !== Object.prototype
+      ? Object.getOwnPropertyNames(proto)
+      : []),
     ...Object.keys(value),
   ]);
 
