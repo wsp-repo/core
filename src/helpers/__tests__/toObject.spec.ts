@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { toObject } from '../toObject';
+import { toObject } from '../index';
 
 type ObjValue = {
   bool: boolean;
@@ -56,14 +56,14 @@ const objValue: ObjValue = {
 };
 
 describe('Helpers object functions', () => {
-  it('getKeys (class properties)', () => {
+  it('toObject (class properties)', () => {
     const clsValue = new ClsValue(objValue);
     const newValue = toObject(clsValue);
 
     expect(newValue).toEqual(objValue);
   });
 
-  it('getKeys (class getter)', () => {
+  it('toObject (class getter)', () => {
     const clsValue = new GetValue(objValue);
     const newValue = toObject(clsValue, ['strVal']);
 

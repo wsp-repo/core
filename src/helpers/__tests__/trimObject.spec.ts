@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { trimObject } from '../trimObject';
+import { trimObject } from '../index';
 
 describe('Helpers object functions', () => {
   const date = new Date();

@@ -2,12 +2,14 @@
 
 import { describe, it, expect } from 'vitest';
 
-import { isDefined } from '../isDefined';
-import { isError } from '../isError';
-import { isFunction } from '../isFunction';
-import { isObject } from '../isObject';
-import { isTrue } from '../isTrue';
-import { isUndefined } from '../isUndefined';
+import {
+  isDefined,
+  isError,
+  isFunction,
+  isObject,
+  isTrue,
+  isUndefined,
+} from '../index';
 
 type TestIsMethods = {
   isDef: boolean;
