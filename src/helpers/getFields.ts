@@ -6,14 +6,6 @@ import { isUndefined } from './isUndefined';
 
 const specialKeys = new Set(['__proto__']);
 
-function isExcludedKey(key: string): boolean {
-  // специальные зарезервированные ключи
-  if (specialKeys.has(key)) return true;
-
-  // private декларации классов
-  return key.startsWith('#');
-}
-
 /**
  * Возвращает список Runtime свойств объекта/инстанса класса
  * ! в Runtime игнорируются модификаторы приватности классов
@@ -41,7 +33,7 @@ export function getFields<T extends object>(
   const result = ([...keys] as (keyof T)[]).filter((key) => {
     if (onlyDefined && isUndefined(value[key])) return false;
 
-    if (isExcludedKey(String(key))) return false;
+    if (specialKeys.has(String(key))) return false;
 
     return !isFunction(value[key]);
   });
