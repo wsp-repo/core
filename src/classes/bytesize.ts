@@ -29,9 +29,9 @@ enum Values {
 }
 
 export class ByteSize {
-  private bytes: number;
+  #bytes: number;
 
-  private values: Partial<Record<Values, number>> = {};
+  #values: Partial<Record<Values, number>> = {};
 
   constructor(value: string | number) {
     if (!ByteSize.isValid(value)) {
@@ -41,14 +41,14 @@ export class ByteSize {
     const strValue = String(value).trim();
 
     if (typeof value === 'number') {
-      this.bytes = value;
+      this.#bytes = value;
     } else if (strValue.match(regExpNum)) {
-      this.bytes = Number(value);
+      this.#bytes = Number(value);
     } else {
       const match = strValue.match(regExpStr);
       const { gb, mb, kb, b } = match?.groups || {};
 
-      this.bytes =
+      this.#bytes =
         (gb ? Number(gb) * bytesInGb : 0) +
         (mb ? Number(mb) * bytesInMb : 0) +
         (kb ? Number(kb) * bytesInKb : 0) +
@@ -76,8 +76,8 @@ export class ByteSize {
    */
   public toGb(ceil?: boolean): number {
     return ceil
-      ? this.getCeil(Values.GbCeil, bytesInGb)
-      : this.getFloat(Values.GbFloat, bytesInGb);
+      ? this.#getCeil(Values.GbCeil, bytesInGb)
+      : this.#getFloat(Values.GbFloat, bytesInGb);
   }
 
   /**
@@ -85,8 +85,8 @@ export class ByteSize {
    */
   public toMb(ceil?: boolean): number {
     return ceil
-      ? this.getCeil(Values.MbCeil, bytesInMb)
-      : this.getFloat(Values.MbFloat, bytesInMb);
+      ? this.#getCeil(Values.MbCeil, bytesInMb)
+      : this.#getFloat(Values.MbFloat, bytesInMb);
   }
 
   /**
@@ -94,24 +94,24 @@ export class ByteSize {
    */
   public toKb(ceil?: boolean): number {
     return ceil
-      ? this.getCeil(Values.KbCeil, bytesInKb)
-      : this.getFloat(Values.KbFloat, bytesInKb);
+      ? this.#getCeil(Values.KbCeil, bytesInKb)
+      : this.#getFloat(Values.KbFloat, bytesInKb);
   }
 
   /**
    * Возвращает размер в байтах
    */
   public toBytes(): number {
-    return this.bytes;
+    return this.#bytes;
   }
 
   /**
    * Возвращает строковое представление
    */
   public toString(): string {
-    if (!this.bytes) return '0';
+    if (!this.#bytes) return '0';
 
-    let bytes = this.bytes;
+    let bytes = this.#bytes;
     const result: string[] = [];
 
     if (bytes > bytesInGb) {
@@ -154,24 +154,24 @@ export class ByteSize {
   /**
    * Возвращает дробное значение с кешированием по ключу
    */
-  private getFloat(keyValue: Values, divider: number): number {
-    if (isUndefined(this.values[keyValue])) {
-      const intValue = Math.ceil((1000 * this.bytes) / divider);
+  #getFloat(keyValue: Values, divider: number): number {
+    if (isUndefined(this.#values[keyValue])) {
+      const intValue = Math.ceil((1000 * this.#bytes) / divider);
 
-      this.values[keyValue] = intValue / 1000;
+      this.#values[keyValue] = intValue / 1000;
     }
 
-    return this.values[keyValue];
+    return this.#values[keyValue];
   }
 
   /**
    * Возвращает округленное значение с кешированием по ключу
    */
-  private getCeil(keyValue: Values, divider: number): number {
-    if (isUndefined(this.values[keyValue])) {
-      this.values[keyValue] = Math.ceil(this.bytes / divider);
+  #getCeil(keyValue: Values, divider: number): number {
+    if (isUndefined(this.#values[keyValue])) {
+      this.#values[keyValue] = Math.ceil(this.#bytes / divider);
     }
 
-    return this.values[keyValue];
+    return this.#values[keyValue];
   }
 }

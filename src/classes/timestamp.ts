@@ -31,9 +31,9 @@ enum Values {
 }
 
 export class Timestamp {
-  private ms!: number;
+  #ms!: number;
 
-  private values: Partial<Record<Values, number>> = {};
+  #values: Partial<Record<Values, number>> = {};
 
   constructor(value: string | number) {
     if (!Timestamp.isValid(value)) {
@@ -43,14 +43,14 @@ export class Timestamp {
     const strValue = String(value).trim();
 
     if (typeof value === 'number') {
-      this.ms = value;
+      this.#ms = value;
     } else if (strValue.match(regExpNum)) {
-      this.ms = Number(value);
+      this.#ms = Number(value);
     } else {
       const match = strValue.match(regExpStr);
       const { d, h, m, s, ms } = match?.groups || {};
 
-      this.ms =
+      this.#ms =
         (d ? Number(d) * msInDay : 0) +
         (h ? Number(h) * msInHour : 0) +
         (m ? Number(m) * msInMin : 0) +
@@ -79,8 +79,8 @@ export class Timestamp {
    */
   public toHour(ceil?: boolean): number {
     return ceil
-      ? this.getCeil(Values.HourCeil, msInHour)
-      : this.getFloat(Values.HourFloat, msInHour);
+      ? this.#getCeil(Values.HourCeil, msInHour)
+      : this.#getFloat(Values.HourFloat, msInHour);
   }
 
   /**
@@ -88,8 +88,8 @@ export class Timestamp {
    */
   public toMin(ceil?: boolean): number {
     return ceil
-      ? this.getCeil(Values.MinCeil, msInMin)
-      : this.getFloat(Values.MinFloat, msInMin);
+      ? this.#getCeil(Values.MinCeil, msInMin)
+      : this.#getFloat(Values.MinFloat, msInMin);
   }
 
   /**
@@ -97,24 +97,24 @@ export class Timestamp {
    */
   public toSec(ceil?: boolean): number {
     return ceil
-      ? this.getCeil(Values.SecCeil, msInSec)
-      : this.getFloat(Values.SecFloat, msInSec);
+      ? this.#getCeil(Values.SecCeil, msInSec)
+      : this.#getFloat(Values.SecFloat, msInSec);
   }
 
   /**
    * Возвращает время в милисекундах
    */
   public toMs(): number {
-    return this.ms;
+    return this.#ms;
   }
 
   /**
    * Возвращает строковое представление
    */
   public toString(): string {
-    if (!this.ms) return '0';
+    if (!this.#ms) return '0';
 
-    let ms = this.ms;
+    let ms = this.#ms;
     const result: string[] = [];
 
     if (ms > msInDay) {
@@ -170,7 +170,7 @@ export class Timestamp {
   public increase(value: Timestamp | string | number): Timestamp {
     const timestamp = value instanceof Timestamp ? value : new Timestamp(value);
 
-    this.ms += timestamp.toMs();
+    this.#ms += timestamp.toMs();
 
     return this;
   }
@@ -181,11 +181,11 @@ export class Timestamp {
   public decrease(value: Timestamp | string | number): Timestamp {
     const timestamp = value instanceof Timestamp ? value : new Timestamp(value);
 
-    if (this.ms < timestamp.toMs()) {
+    if (this.#ms < timestamp.toMs()) {
       throw new Error('The value is too high');
     }
 
-    this.ms -= timestamp.toMs();
+    this.#ms -= timestamp.toMs();
 
     return this;
   }
@@ -193,24 +193,24 @@ export class Timestamp {
   /**
    * Возвращает дробное значение с кешированием по ключу
    */
-  private getFloat(keyValue: Values, divider: number): number {
-    if (isUndefined(this.values[keyValue])) {
-      const intValue = Math.ceil((1000 * this.ms) / divider);
+  #getFloat(keyValue: Values, divider: number): number {
+    if (isUndefined(this.#values[keyValue])) {
+      const intValue = Math.ceil((1000 * this.#ms) / divider);
 
-      this.values[keyValue] = intValue / 1000;
+      this.#values[keyValue] = intValue / 1000;
     }
 
-    return this.values[keyValue];
+    return this.#values[keyValue];
   }
 
   /**
    * Возвращает округленное значение с кешированием по ключу
    */
-  private getCeil(keyValue: Values, divider: number): number {
-    if (isUndefined(this.values[keyValue])) {
-      this.values[keyValue] = Math.ceil(this.ms / divider);
+  #getCeil(keyValue: Values, divider: number): number {
+    if (isUndefined(this.#values[keyValue])) {
+      this.#values[keyValue] = Math.ceil(this.#ms / divider);
     }
 
-    return this.values[keyValue];
+    return this.#values[keyValue];
   }
 }

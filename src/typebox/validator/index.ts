@@ -15,19 +15,18 @@ const defaultOptions: TypeboxOptions = {
 };
 
 export class TypeboxValidator<T extends TSchema> {
-  private readonly checker: TypeCheck<TSchema>;
-  private readonly options: TypeboxOptions;
+  readonly #checker: TypeCheck<TSchema>;
+  readonly #options: TypeboxOptions;
+  readonly #schema: T;
 
-  constructor(
-    private readonly schema: T,
-    options?: TypeboxOptions,
-  ) {
+  constructor(schema: T, options?: TypeboxOptions) {
     if (!TypeGuard.IsSchema(schema)) {
       throw new TypeError('Invalid schema provided');
     }
 
-    this.checker = TypeCompiler.Compile(this.schema);
-    this.options = { ...defaultOptions, ...options };
+    this.#options = { ...defaultOptions, ...options };
+    this.#checker = TypeCompiler.Compile(schema);
+    this.#schema = schema;
   }
 
   /**
@@ -39,30 +38,30 @@ export class TypeboxValidator<T extends TSchema> {
       // не используется Value.Parse для лучшего контроля
       // шагов и отличного от базового порядка операций
 
-      if (this.options.clean) {
-        value = Value.Clean(this.schema, value);
+      if (this.#options.clean) {
+        value = Value.Clean(this.#schema, value);
       }
 
-      if (this.options.defaults) {
-        value = Value.Default(this.schema, value);
+      if (this.#options.defaults) {
+        value = Value.Default(this.#schema, value);
       }
 
-      if (this.options.convert) {
-        value = Value.Convert(this.schema, value);
+      if (this.#options.convert) {
+        value = Value.Convert(this.#schema, value);
       }
 
-      if (this.options.encode) {
-        value = Value.Encode(this.schema, value);
+      if (this.#options.encode) {
+        value = Value.Encode(this.#schema, value);
       }
 
-      if (!this.checker.Check(value)) {
-        const errors = [...this.checker.Errors(value)];
+      if (!this.#checker.Check(value)) {
+        const errors = [...this.#checker.Errors(value)];
 
         throw new TypeboxError(errors);
       }
 
-      if (this.options.decode) {
-        value = Value.Decode(this.schema, value);
+      if (this.#options.decode) {
+        value = Value.Decode(this.#schema, value);
       }
 
       return value;

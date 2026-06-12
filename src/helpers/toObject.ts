@@ -9,7 +9,7 @@ type DataFields<T> = {
 type ClassToObject<T> = Pick<T, DataFields<T>>;
 
 /**
- * Перегоняет класс в объект с полями свойств
+ * Перегоняет класс в объект с полями значений
  * ! захватывает private/protected поля (см. getFields)
  */
 export function toObject<T extends object>(
