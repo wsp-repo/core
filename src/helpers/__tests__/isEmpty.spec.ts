@@ -1,9 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { isEmpty } from '../index';
-
-const isDebug = Boolean(process.env.VSCODE_INSPECTOR_OPTIONS);
-const itOptions = { timeout: isDebug ? 600000 : 1000 };
+import { getOptions } from './__helpers.spec';
 
 type Test = {
   result: boolean;
@@ -127,7 +125,7 @@ describe('Helper isEmpty', () => {
     { value: class6, trim: true, result: false },
   ];
 
-  it.each(TESTS)('- ', itOptions, ({ value, trim, result }) => {
+  it.each(TESTS)('- ', getOptions(), ({ value, trim, result }) => {
     expect(isEmpty(value, trim)).toBe(result);
   });
 });

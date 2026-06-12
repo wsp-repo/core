@@ -10,7 +10,7 @@ module.exports = defineConfig({
   },
   test: {
     environment: 'node',
-    exclude: ['node_modules', 'dist' ],
+    exclude: ['node_modules', 'dist'],
     globals: true,
     include: ['src/**/*.spec.ts'],
     root: '.',
