@@ -1,11 +1,30 @@
-export class CoreError<DetailsType = unknown> extends Error {
+type CoreErrorJson<TDetails = unknown> = {
+  code: string;
+  details?: TDetails;
+  message: string;
+  statusCode: number;
+};
+
+export class CoreError<TDetails = unknown> extends Error {
   public readonly code: string = 'UNKNOWN_ERROR';
   public readonly statusCode: number = 500;
 
   constructor(
     public readonly message = 'System error',
-    public readonly details?: DetailsType,
+    public readonly details?: TDetails,
   ) {
     super(message);
+  }
+
+  /**
+   * Формирует корректное тело JSON объекта
+   */
+  public toJSON(): CoreErrorJson<TDetails> {
+    return {
+      code: this.code,
+      details: this.details,
+      message: this.message,
+      statusCode: this.statusCode,
+    };
   }
 }
