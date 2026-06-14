@@ -1,4 +1,4 @@
-import { REGEXP_UPPER_CASE } from 'src/regexps';
+import { REGEXP_UPPER_CASE } from '../regexps';
 
 /**
  * Проверяет, что значение корректный UPPER_CASE формат

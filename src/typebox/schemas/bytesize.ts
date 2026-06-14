@@ -9,7 +9,7 @@ import {
   SchemaOptions,
 } from '@sinclair/typebox';
 
-import { ByteSize } from 'src/classes';
+import { ByteSize } from '../../classes';
 
 import { TFormats } from '../types';
 

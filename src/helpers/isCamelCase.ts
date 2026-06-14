@@ -1,4 +1,4 @@
-import { REGEXP_CAMEL_CASE } from 'src/regexps';
+import { REGEXP_CAMEL_CASE } from '../regexps';
 
 /**
  * Проверяет, что значение корректный cameCase формат

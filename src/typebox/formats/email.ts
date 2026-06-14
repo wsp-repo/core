@@ -1,4 +1,4 @@
-import { REGEXP_EMAIL } from 'src/regexps';
+import { REGEXP_EMAIL } from '../../regexps';
 
 export function emailFormat(value: string): boolean {
   REGEXP_EMAIL.lastIndex = 0;

@@ -9,7 +9,7 @@ import {
   SchemaOptions,
 } from '@sinclair/typebox';
 
-import { Timestamp } from 'src/classes';
+import { Timestamp } from '../../classes';
 
 import { TFormats } from '../types';
 

@@ -1,4 +1,4 @@
-import { REGEXP_PASCAL_CASE } from 'src/regexps';
+import { REGEXP_PASCAL_CASE } from '../regexps';
 
 /**
  * Проверяет, что значение корректный PascalCase формат

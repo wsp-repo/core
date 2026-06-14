@@ -1,4 +1,4 @@
-import { REGEXP_IPV4, REGEXP_IPV6 } from 'src/regexps';
+import { REGEXP_IPV4, REGEXP_IPV6 } from '../../regexps';
 
 export function ipv4Format(value: string): boolean {
   REGEXP_IPV4.lastIndex = 0;

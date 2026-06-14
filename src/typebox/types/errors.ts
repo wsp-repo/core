@@ -1,7 +1,7 @@
 import { ValueError, ValueErrorType } from '@sinclair/typebox/errors';
 
-import { ValidationDetail, ValidationError } from 'src/errors';
-import { isEmpty } from 'src/helpers';
+import { ValidationDetail, ValidationError } from '../../errors';
+import { isEmpty } from '../../helpers';
 
 export class TypeboxError extends ValidationError {
   constructor(
