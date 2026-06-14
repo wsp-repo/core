@@ -1,14 +1,10 @@
 import { CoreError } from '../errors';
 
-export type SuccessResponse<Result = never> = [Result] extends [never]
+export type SuccessResponse<TResult = never> = [TResult] extends [never]
   ? { result?: never; success: true }
-  : { result: Result; success: true };
+  : { result: TResult; success: true };
 
-export type ErrorResponse<ErrorType extends CoreError = CoreError> = {
-  error: ErrorType;
+export type ErrorResponse = {
+  error: CoreError;
   success: false;
 };
-
-export type ApiResponse<Result = never> =
-  | SuccessResponse<Result>
-  | ErrorResponse;

@@ -1,4 +1,4 @@
-import { REGEXP_TIME } from 'src/regexps';
+import { REGEXP_TIME } from '../../regexps';
 
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
 const DAYS = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];

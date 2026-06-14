@@ -1,4 +1,4 @@
-import { REGEXP_URI, REGEXP_URL } from 'src/regexps';
+import { REGEXP_URI, REGEXP_URL } from '../../regexps';
 
 export function uriFormat(value: string): boolean {
   REGEXP_URI.lastIndex = 0;
