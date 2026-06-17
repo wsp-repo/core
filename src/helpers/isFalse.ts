@@ -1,4 +1,3 @@
-import { getType } from './getType';
 import { isArray } from './isArray';
 import { isEmpty } from './isEmpty';
 import { isFunction } from './isFunction';
@@ -14,7 +13,7 @@ const falseValues = ['false', '0', 'off'];
  * - сравнение с 'false', '0', 'off'
  */
 export function isFalse(value?: unknown): boolean {
-  if (getType(value) === 'boolean') return value === false;
+  if (typeof value === 'boolean') return value === false;
 
   if (isFunction<() => boolean>(value)) return value() === false;
 

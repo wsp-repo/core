@@ -14,6 +14,7 @@ export * from './isNumber';
 export * from './isNumeric';
 export * from './isObject';
 export * from './isPascalCase';
+export * from './isPrimitive';
 export * from './isString';
 export * from './isTrue';
 export * from './isUndefined';

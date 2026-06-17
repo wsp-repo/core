@@ -1,4 +1,3 @@
-import { getType } from './getType';
 import { isArray } from './isArray';
 import { isEmpty } from './isEmpty';
 import { isFunction } from './isFunction';
@@ -14,7 +13,7 @@ const trueValues = ['true', '1', 'on'];
  * - сравнение с 'true', '1', 'on'
  */
 export function isTrue(value?: unknown): boolean {
-  if (getType(value) === 'boolean') return value === true;
+  if (typeof value === 'boolean') return value === true;
 
   if (isFunction<() => boolean>(value)) return value() === true;
 
