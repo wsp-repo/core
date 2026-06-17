@@ -51,22 +51,6 @@ const parentFields: string[] = [
   // 'method'  - функция/метод
 ];
 
-const parentFieldsTrim: string[] = [
-  // 'prop1',  - не определено
-  // 'prop2',  - равно undefined
-  'prop3',
-  'prop4',
-  'prop5',
-  // '#prop6', - приватный префикс
-  'get1',
-  // 'get2',   - равно undefined
-  'get3',
-  'get4',
-  'get5',
-  // '#get6',  - приватный префикс
-  // 'method'  - функция/метод
-];
-
 class Child extends Parent {
   public prop7: string = '';
   protected prop8: string = '';
@@ -81,14 +65,6 @@ class Child extends Parent {
 
 const childFields: string[] = [
   ...parentFields,
-  'prop7',
-  'prop8',
-  // '#prop9',  - приватный префикс
-  'get7',
-];
-
-const childFieldsTrim: string[] = [
-  ...parentFieldsTrim,
   'prop7',
   'prop8',
   // '#prop9',  - приватный префикс
@@ -123,80 +99,44 @@ describe('Helper getObjectFields', () => {
     expect(getObjectFields(parent)?.sort()).toEqual(parentFields.sort());
   });
 
-  it('Class Parent, onlyDefined', getOptions(), () => {
-    expect(getObjectFields(parent, { onlyDefined: true })?.sort()).toEqual(
-      parentFieldsTrim.sort(),
-    );
-  });
-
   it('Class Child', getOptions(), () => {
     expect(getObjectFields(child)?.sort()).toEqual(childFields.sort());
   });
 
-  it('Class Child, onlyDefined', getOptions(), () => {
-    expect(getObjectFields(child, { onlyDefined: true })?.sort()).toEqual(
-      childFieldsTrim.sort(),
-    );
-  });
-
   it('Object', getOptions(), () => {
-    expect(getObjectFields(obj)?.sort()).toEqual(['prop2', 'prop3']);
-  });
-
-  it('Object, onlyDefined', getOptions(), () => {
-    expect(getObjectFields(obj, { onlyDefined: true })?.sort()).toEqual([
-      'prop3',
-    ]);
+    expect(getObjectFields(obj)?.sort()).toEqual(['prop2', 'prop3'].sort());
   });
 
   it('Error', getOptions(), () => {
-    expect(getObjectFields(error)?.sort()).toEqual(['message', 'name']);
-  });
-
-  it('Error, onlyDefined', getOptions(), () => {
-    expect(getObjectFields(error, { onlyDefined: true })?.sort()).toEqual([
-      'message',
-      'name',
-    ]);
+    expect(getObjectFields(error)?.sort()).toEqual(['message', 'name'].sort());
   });
 
   it('CoreError', getOptions(), () => {
-    expect(getObjectFields(coreError)?.sort()).toEqual([
-      'code',
-      'details',
-      'message',
-      'name',
-      'statusCode',
-    ]);
-  });
-
-  it('CoreError, onlyDefined', getOptions(), () => {
-    expect(getObjectFields(coreError, { onlyDefined: true })?.sort()).toEqual([
-      'code',
-      'message',
-      'name',
-      'statusCode',
-    ]);
+    expect(getObjectFields(coreError)?.sort()).toEqual(
+      ['code', 'details', 'message', 'name', 'statusCode'].sort(),
+    );
   });
 
   it('CoreError & details', getOptions(), () => {
-    expect(getObjectFields(coreErrorDetails)?.sort()).toEqual([
-      'code',
-      'details',
-      'message',
-      'name',
-      'statusCode',
-    ]);
-  });
-
-  it('CoreError & details, onlyDefined', getOptions(), () => {
-    expect(
-      getObjectFields(coreErrorDetails, { onlyDefined: true })?.sort(),
-    ).toEqual(['code', 'details', 'message', 'name', 'statusCode']);
+    expect(getObjectFields(coreErrorDetails)?.sort()).toEqual(
+      ['code', 'details', 'message', 'name', 'statusCode'].sort(),
+    );
   });
 
   it('Date object', () => {
-    expect(getObjectFields(new Date() as any)).toEqual(undefined);
+    expect(getObjectFields(new Date())).toEqual([]);
+  });
+
+  it('Map object', () => {
+    const mapValue = new Map([
+      ['a', 1],
+      ['b', 2],
+    ]);
+    expect(getObjectFields(mapValue)).toEqual(['size']);
+  });
+
+  it('Set object', () => {
+    expect(getObjectFields(new Set([1, 'b', 2]))).toEqual(['size']);
   });
 
   it('String value', () => {

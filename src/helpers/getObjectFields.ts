@@ -1,40 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { getPreciseType } from './getPreciseType';
 import { isFunction } from './isFunction';
-import { isUndefined } from './isUndefined';
+import { isObject } from './isObject';
 
-export type GetFieldsOptions = {
-  ignoreFields?: string[];
-  ignoreTypes?: string[];
-  onlyDefined?: boolean;
-};
-
-// обязательные опции игнорирования
-const requiredIgnoreFields = new Set(['__proto__']);
-const requiredIgnoreTypes = new Set(['promise', 'date', 'map', 'set']);
-
-/**
- * Проверяет игнорирование значения по типу с учетом опций
- */
-function ignoreByType(value: unknown, ignoreTypes?: string[]): value is object {
-  if (value === null || typeof value !== 'object') return true;
-
-  const preciseType = getPreciseType(value);
-
-  if (requiredIgnoreTypes.has(preciseType)) return true;
-
-  return Boolean(ignoreTypes?.includes(preciseType));
-}
-
-/**
- * Проверяет игнорирование поля по имени с учетом опций
- */
-function ignoreField(fieldName: string, ignoreFields?: string[]): boolean {
-  if (requiredIgnoreFields.has(fieldName)) return false;
-
-  return Boolean(ignoreFields?.includes(fieldName));
-}
+// список ключей, которые всегда игнорируются
+const ignoredFields = new Set(['__proto__']);
 
 /**
  * Возвращает список Runtime свойств объекта/инстанса класса
@@ -44,33 +14,44 @@ function ignoreField(fieldName: string, ignoreFields?: string[]): boolean {
  */
 export function getObjectFields<T extends object>(
   value?: T,
-  options?: GetFieldsOptions,
 ): (keyof T)[] | undefined {
-  if (isUndefined(value)) return undefined;
+  if (!isObject(value)) return undefined;
 
-  const { ignoreFields, ignoreTypes, onlyDefined } = options || {};
-
-  if (ignoreByType(value, ignoreTypes)) return undefined;
-
-  const keys = new Set(Object.keys(value));
+  const keys = new Set();
 
   let proto = Object.getPrototypeOf(value);
 
   while (proto && proto !== Object.prototype) {
     for (const key of Object.getOwnPropertyNames(proto)) {
-      keys.add(key);
+      if (ignoredFields.has(key)) continue;
+
+      const descriptor = Object.getOwnPropertyDescriptor(proto, key);
+
+      if (isFunction(descriptor?.value)) continue;
+
+      if (descriptor && 'get' in descriptor) {
+        keys.add(key);
+
+        continue;
+      }
+
+      if (!isFunction(value[key as keyof T])) {
+        keys.add(key);
+      }
     }
 
     proto = Object.getPrototypeOf(proto);
   }
 
-  const result = ([...keys] as (keyof T)[]).filter((key) => {
-    if (onlyDefined && isUndefined(value[key])) return false;
+  Object.keys(value).forEach((key) => {
+    if (ignoredFields.has(key) || keys.has(key)) {
+      return;
+    }
 
-    if (ignoreField(String(key), ignoreFields)) return false;
-
-    return !isFunction(value[key]);
+    if (!isFunction(value[key as keyof T])) {
+      keys.add(key);
+    }
   });
 
-  return result;
+  return [...keys] as (keyof T)[];
 }
