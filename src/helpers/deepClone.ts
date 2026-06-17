@@ -1,12 +1,13 @@
+import { getObjectFields } from './getObjectFields';
 import { isDefined } from './isDefined';
-import { isObject } from './isObject';
+import { isPrimitive } from './isPrimitive';
 
 /**
  * Возвращает скопированный объект/массив
  * - используется глубокое копирование данных
  */
 export function deepClone<T>(value: T, notTrim?: boolean): T {
-  if (!value) return value;
+  if (!value || isPrimitive(value)) return value;
 
   if (Array.isArray(value)) {
     const result: unknown[] = [];
@@ -20,7 +21,9 @@ export function deepClone<T>(value: T, notTrim?: boolean): T {
     return result as T;
   }
 
-  if (isObject(value)) {
+  const objectFields = getObjectFields(value);
+
+  if (objectFields) {
     const result: Record<string, unknown> = {};
 
     for (const key in value) {

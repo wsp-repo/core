@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { Timestamp } from '../timestamp';
+import { Timestamp } from '../index';
 
 type TestSuccess = {
   input: string | number;

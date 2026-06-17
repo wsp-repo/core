@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
 /**
- * Возвращает строку типа значения
+ * Возвращает строку точного типа значения
  * !Внимание! Результат всегда в LowerCase
  */
-export function getType(value: unknown): string {
+export function getPreciseType(value: unknown): string {
   if (value === null) return 'null';
 
   if (Array.isArray(value)) return 'array';

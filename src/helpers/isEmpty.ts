@@ -1,4 +1,4 @@
-import { getFields } from './getFields';
+import { getObjectFields } from './getObjectFields';
 import { isArray } from './isArray';
 import { isObject } from './isObject';
 import { isString } from './isString';
@@ -29,7 +29,7 @@ export function isEmpty(value: unknown, trim = false): boolean {
   }
 
   if (isObject(value)) {
-    const properties = getFields(value, trim);
+    const properties = getObjectFields(value, { onlyDefined: trim });
 
     return properties.length === 0;
   }

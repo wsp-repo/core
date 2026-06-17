@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { getType } from '../getType';
+import { getPreciseType } from '../index';
 
 type TestObject = {
   input: unknown;
@@ -38,7 +38,7 @@ const simpleFunctionResult = simpleFunction();
 const promiseFunctionResult = promiseFunction();
 const asyncFunctionResult = asyncFunction();
 
-describe('Helper getType:', () => {
+describe('Helper getPreciseType:', () => {
   const TESTS: TestObject[] = [
     {
       name: 'undefined',
@@ -148,6 +148,6 @@ describe('Helper getType:', () => {
   ];
 
   it.each(TESTS)('$name => $result', ({ input, result }) => {
-    expect(getType(input)).toEqual(result);
+    expect(getPreciseType(input)).toEqual(result);
   });
 });

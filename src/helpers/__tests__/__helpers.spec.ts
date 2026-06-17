@@ -8,6 +8,6 @@ export function getOptions(options?: TestOptions): TestOptions {
 }
 
 // заглушка для тестирования
-describe('Tests helpers', () => {
+describe.skip('Tests helpers', () => {
   it(() => expect(true).toBe(true));
 });

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 
-import { getFields } from './getFields';
+import { getObjectFields } from './getObjectFields';
 
 type DataFields<T> = {
   [K in keyof T]: T[K] extends Function ? never : K;
@@ -18,7 +18,7 @@ export function toObject<T extends object>(
 ): ClassToObject<T> {
   const result = {} as ClassToObject<T>;
 
-  getFields(value, true).forEach((key) => {
+  getObjectFields(value, { onlyDefined: true }).forEach((key) => {
     if (exclude.includes(key as string)) return;
 
     Object.assign(result, { [key]: value[key] });

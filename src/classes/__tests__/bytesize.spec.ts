@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { ByteSize } from '../bytesize';
+import { ByteSize } from '../index';
 
 type TestSuccess = {
   bytes: number;
