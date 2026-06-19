@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { isFunction } from './isFunction';
 import { isObject } from './isObject';
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 
-import { isUndefined } from '../helpers';
+import { isUndefined } from '../helpers/isUndefined';
 
 const regExpNum = /^\d+$/;
 const regExpStr = new RegExp(

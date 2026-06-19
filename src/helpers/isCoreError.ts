@@ -6,9 +6,12 @@ export function isCoreError(value: unknown, strict?: true): value is CoreError {
 
   const asCoreError = value as CoreError;
 
-  return (
-    isDefined(asCoreError.message) &&
-    isDefined(asCoreError.statusCode) &&
-    isDefined(asCoreError.code)
-  );
+  return asCoreError
+    ? // поля наследуемые из Error
+      isDefined(asCoreError.message) &&
+        isDefined(asCoreError.name) &&
+        // специфические поля CoreError
+        isDefined(asCoreError.statusCode) &&
+        isDefined(asCoreError.code)
+    : false;
 }
