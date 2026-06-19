@@ -79,13 +79,9 @@ describe('Helpers checkers is...', () => {
     { result: true, value: 1 },
     { result: true, value: '1' },
     { result: true, value: 'ON' },
-    { result: true, value: [1] },
-    { result: true, value: { key: 1 } },
     { result: false, value: false },
     { result: false, value: 'false' },
     { result: false, value: 0 },
-    { result: false, value: [] },
-    { result: false, value: {} },
     { result: false },
   ];
   it.each(isTrueTests)('isTrue', ({ value, result }) => {

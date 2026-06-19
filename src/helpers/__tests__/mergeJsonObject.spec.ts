@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { MergeJsonArray, mergeJsonObject } from '../index';
+import { MergeArrayModes, mergeJsonObject } from '../index';
 import { getOptions } from './__helpers.spec';
 
 import { JsonObject } from '../../types';
@@ -48,7 +48,7 @@ describe('Helper mergeJsonObject', () => {
 
     expect(
       mergeJsonObject(target, source, {
-        mergeArray: MergeJsonArray.Append,
+        mergeArray: MergeArrayModes.Append,
       }),
     ).toEqual({ items: [1, 2, 3, 4] });
   });
@@ -59,7 +59,7 @@ describe('Helper mergeJsonObject', () => {
 
     expect(
       mergeJsonObject(target, source, {
-        mergeArray: MergeJsonArray.Rewrite,
+        mergeArray: MergeArrayModes.Rewrite,
       }),
     ).toEqual({ items: [9, 2, 3] });
   });
@@ -74,7 +74,7 @@ describe('Helper mergeJsonObject', () => {
 
     expect(
       mergeJsonObject(target, source, {
-        mergeArray: MergeJsonArray.Merge,
+        mergeArray: MergeArrayModes.Merge,
       }),
     ).toEqual({
       items: [{ enabled: true, value: 9 }, 3],

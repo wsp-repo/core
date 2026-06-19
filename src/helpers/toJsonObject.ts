@@ -11,7 +11,7 @@ import {
   JsonArray,
   JsonObject,
   JsonPrimitive,
-  JsonResult,
+  JsonValue,
 } from '../types';
 
 export type ToJsonObjectOptions = {
@@ -34,7 +34,7 @@ type Converter = (
   source: unknown,
   state: State,
   options: ToJsonObjectOptions,
-) => JsonResult;
+) => JsonValue | undefined;
 
 const converters: Record<string, Converter> = {
   array: convertArray,
@@ -54,10 +54,10 @@ const defaultOptions: ToJsonObjectOptions = {
   trimArrayUndefined: false,
 };
 
-export function toJsonObject<T extends JsonResult = JsonResult>(
+export function toJsonObject<T extends JsonValue = JsonValue>(
   value: unknown,
   options?: Partial<ToJsonObjectOptions>,
-): T {
+): T | undefined {
   const state = { path: '$', seen: new WeakMap<object, string>() };
   const useOptions = { ...defaultOptions, ...options };
 
@@ -68,7 +68,7 @@ function convert(
   value: unknown,
   state: State,
   options: ToJsonObjectOptions,
-): JsonResult {
+): JsonValue | undefined {
   if (ignoredNode(value)) return undefined;
 
   const source = value as object;

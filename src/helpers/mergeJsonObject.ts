@@ -1,29 +1,25 @@
-import { JsonArray, JsonObject, JsonResult, JsonValue } from '../types';
+import { JsonArray, JsonObject, JsonValue } from '../types';
 
-export enum MergeJsonArray {
+export enum MergeArrayModes {
   Append = 'append',
   Merge = 'merge',
   Replace = 'replace',
   Rewrite = 'rewrite',
 }
 
-export type MergeJsonArrayCustom = (
+export type MergeArrayCustom = (
   target: JsonArray,
   source: JsonArray,
-  options: MergeJsonObjectOptions,
+  options: MergeJsonOptions,
 ) => JsonArray;
 
-export type MergeJsonObjectOptions = {
-  mergeArray?: MergeJsonArray | MergeJsonArrayCustom;
-  mergePath?: string;
-  mutate?: boolean;
-};
-
-type Options = {
-  mergeArray: MergeJsonArray | MergeJsonArrayCustom;
+export type MergeJsonOptions = {
+  mergeArray: MergeArrayModes | MergeArrayCustom;
   mergePath?: string;
   mutate: boolean;
 };
+
+type JsonNode = JsonValue | undefined;
 
 /**
  * Выполняет глубокое объединение JSON-объектов
@@ -31,7 +27,7 @@ type Options = {
 export function mergeJsonObject(
   target: JsonObject,
   source: JsonObject,
-  options?: MergeJsonObjectOptions,
+  options?: Partial<MergeJsonOptions>,
 ): JsonObject {
   const useOptions = getOptions(options);
   const useTarget = useOptions.mutate ? target : cloneJsonObject(target);
@@ -42,9 +38,9 @@ export function mergeJsonObject(
 /**
  * Возвращает полный объект опций
  */
-function getOptions(options?: MergeJsonObjectOptions): Options {
+function getOptions(options?: Partial<MergeJsonOptions>): MergeJsonOptions {
   return {
-    mergeArray: options?.mergeArray ?? MergeJsonArray.Replace,
+    mergeArray: options?.mergeArray ?? MergeArrayModes.Replace,
     mergePath: options?.mergePath,
     mutate: options?.mutate ?? false,
   };
@@ -54,10 +50,10 @@ function getOptions(options?: MergeJsonObjectOptions): Options {
  * Объединяет JSON-значения
  */
 function mergeValue(
-  target: JsonResult,
-  source: JsonResult,
-  options: Options,
-): JsonResult {
+  target: JsonNode,
+  source: JsonNode,
+  options: MergeJsonOptions,
+): JsonNode {
   if (source === undefined) return target;
 
   if (Array.isArray(source)) {
@@ -79,7 +75,7 @@ function mergeValue(
 function mergeObject(
   target: JsonObject,
   source: JsonObject,
-  options: Options,
+  options: MergeJsonOptions,
 ): JsonObject {
   for (const key of Object.keys(source)) {
     const sourceValue = source[key];
@@ -103,9 +99,9 @@ function mergeObject(
  * Объединяет JSON-массивы
  */
 function mergeArray(
-  target: JsonResult,
+  target: JsonNode,
   source: JsonArray,
-  options: Options,
+  options: MergeJsonOptions,
 ): JsonArray {
   const useTarget = Array.isArray(target) ? target : [];
   const clonedSource = cloneJsonArray(source);
@@ -116,11 +112,11 @@ function mergeArray(
   }
 
   switch (arrayAction) {
-    case MergeJsonArray.Append:
+    case MergeArrayModes.Append:
       useTarget.push(...clonedSource);
 
       return useTarget;
-    case MergeJsonArray.Merge:
+    case MergeArrayModes.Merge:
       for (let index = 0; index < source.length; index += 1) {
         const mergePath = options.mergePath
           ? `${options.mergePath}.${String(index)}`
@@ -133,7 +129,7 @@ function mergeArray(
       }
 
       return useTarget;
-    case MergeJsonArray.Rewrite:
+    case MergeArrayModes.Rewrite:
       for (let index = 0; index < clonedSource.length; index += 1) {
         if (clonedSource[index] !== undefined) {
           useTarget[index] = clonedSource[index];
@@ -141,7 +137,7 @@ function mergeArray(
       }
 
       return useTarget;
-    case MergeJsonArray.Replace:
+    case MergeArrayModes.Replace:
       return clonedSource;
   }
 }
@@ -182,7 +178,7 @@ function cloneJsonArray(source: JsonArray): JsonArray {
 /**
  * Возвращает флаг JSON-объекта
  */
-function isJsonObject(value: JsonResult): value is JsonObject {
+function isJsonObject(value: JsonNode): value is JsonObject {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
