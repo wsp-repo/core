@@ -7,7 +7,14 @@ export function getOptions(options?: TestOptions): TestOptions {
   return { ...itOptions, ...options };
 }
 
-// заглушка для тестирования
-describe.skip('Tests helpers', () => {
-  it(() => expect(true).toBe(true));
+describe('Helpers', () => {
+  describe('For tests', () => {
+    it('getOptions', () => {
+      expect(getOptions()).toEqual(itOptions);
+      expect(getOptions({ timeout: 100 })).toEqual({
+        ...itOptions,
+        timeout: 100,
+      });
+    });
+  });
 });

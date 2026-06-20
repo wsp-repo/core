@@ -89,32 +89,40 @@ const TESTS_DECREASE: TestShift[] = [
   { input: 2000, msValue: 1000, value: new Timestamp('1s') },
 ];
 
-describe('Helpers checkers is...', () => {
-  it.each(TESTS_ERROR)('Timestamp throw', (input) => {
-    const test = (): Timestamp => new Timestamp(input);
+describe('Classes', () => {
+  describe('Timestamp', () => {
+    it.each(TESTS_ERROR)('Throw exception', (input) => {
+      const test = (): Timestamp => new Timestamp(input);
 
-    expect(test).toThrow();
-  });
+      expect(test).toThrow();
+    });
 
-  it.each(TESTS_PARSE)('Timestamp parse', ({ input, msValue }) => {
-    expect(new Timestamp(input).toMs()).toEqual(msValue);
-  });
+    it.each(TESTS_PARSE)('$input => $msValue', ({ input, msValue }) => {
+      expect(new Timestamp(input).toMs()).toEqual(msValue);
+    });
 
-  it.each(TESTS_SUCCESS)('Timestamp methods', ({ input, ...values }) => {
-    const timestamp = new Timestamp(input);
+    it.each(TESTS_SUCCESS)('$input => toMethods', ({ input, ...values }) => {
+      const timestamp = new Timestamp(input);
 
-    expect(timestamp.toMs()).toEqual(values.msValue);
-    expect(timestamp.toSec()).toEqual(values.secFloat);
-    expect(timestamp.toSec(true)).toEqual(values.secCeil);
-    expect(timestamp.toMin()).toEqual(values.minFloat);
-    expect(timestamp.toMin(true)).toEqual(values.minCeil);
-  });
+      expect(timestamp.toMs()).toEqual(values.msValue);
+      expect(timestamp.toSec()).toEqual(values.secFloat);
+      expect(timestamp.toSec(true)).toEqual(values.secCeil);
+      expect(timestamp.toMin()).toEqual(values.minFloat);
+      expect(timestamp.toMin(true)).toEqual(values.minCeil);
+    });
 
-  it.each(TESTS_INCREASE)('Timestamp increase', ({ input, msValue, value }) => {
-    expect(new Timestamp(input).increase(value).toMs()).toEqual(msValue);
-  });
+    it.each(TESTS_INCREASE)(
+      '$input + $value => $msValue',
+      ({ input, msValue, value }) => {
+        expect(new Timestamp(input).increase(value).toMs()).toEqual(msValue);
+      },
+    );
 
-  it.each(TESTS_DECREASE)('Timestamp decrease', ({ input, msValue, value }) => {
-    expect(new Timestamp(input).decrease(value).toMs()).toEqual(msValue);
+    it.each(TESTS_DECREASE)(
+      '$input - $value => $msValue',
+      ({ input, msValue, value }) => {
+        expect(new Timestamp(input).decrease(value).toMs()).toEqual(msValue);
+      },
+    );
   });
 });

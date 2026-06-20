@@ -14,26 +14,18 @@ import {
   JsonValue,
 } from '../types';
 
-export type ToJsonObjectOptions = {
+export type ToJsonOptions = {
   circularAction: 'skip' | 'throw';
   regexpAction: 'skip' | 'string';
   symbolAction: 'skip' | 'string';
   trimArrayUndefined: boolean;
 };
 
-type State = {
-  path: string;
-  seen: WeakMap<object, string>;
-};
-
-type ObjectWithToJSON = {
-  toJSON: () => unknown;
-};
-
+type State = { path: string; seen: WeakMap<object, string> };
 type Converter = (
   source: unknown,
   state: State,
-  options: ToJsonObjectOptions,
+  options: ToJsonOptions,
 ) => JsonValue | undefined;
 
 const converters: Record<string, Converter> = {
@@ -47,7 +39,7 @@ const converters: Record<string, Converter> = {
   symbol: convertSymbol,
 };
 
-const defaultOptions: ToJsonObjectOptions = {
+const defaultOptions: ToJsonOptions = {
   circularAction: 'throw',
   regexpAction: 'skip',
   symbolAction: 'skip',
@@ -56,7 +48,7 @@ const defaultOptions: ToJsonObjectOptions = {
 
 export function toJsonObject<T extends JsonValue = JsonValue>(
   value: unknown,
-  options?: Partial<ToJsonObjectOptions>,
+  options?: Partial<ToJsonOptions>,
 ): T | undefined {
   const state = { path: '$', seen: new WeakMap<object, string>() };
   const useOptions = { ...defaultOptions, ...options };
@@ -67,7 +59,7 @@ export function toJsonObject<T extends JsonValue = JsonValue>(
 function convert(
   value: unknown,
   state: State,
-  options: ToJsonObjectOptions,
+  options: ToJsonOptions,
 ): JsonValue | undefined {
   if (ignoredNode(value)) return undefined;
 
@@ -86,7 +78,7 @@ function convert(
 
     if (hasMethodToJSON(source)) {
       state.seen.set(source, state.path);
-      const jsonValue = (source as ObjectWithToJSON).toJSON();
+      const jsonValue = source.toJSON();
 
       if (jsonValue === source) {
         state.seen.delete(source);
@@ -117,7 +109,7 @@ function convert(
 function convertObject(
   source: object,
   state: State,
-  options: ToJsonObjectOptions,
+  options: ToJsonOptions,
 ): JsonObject {
   state.seen.set(source, state.path);
   const result: JsonObject = {};
@@ -145,7 +137,7 @@ function convertObject(
 function convertMap(
   source: unknown,
   state: State,
-  options: ToJsonObjectOptions,
+  options: ToJsonOptions,
 ): JsonObject {
   const result: JsonObject = {};
   const objectSource = source as object;
@@ -171,7 +163,7 @@ function convertMap(
 function convertSet(
   source: unknown,
   state: State,
-  options: ToJsonObjectOptions,
+  options: ToJsonOptions,
 ): JsonArray {
   const result: JsonArray = [];
   const objectSource = source as object;
@@ -200,7 +192,7 @@ function convertSet(
 function convertArray(
   source: unknown,
   state: State,
-  options: ToJsonObjectOptions,
+  options: ToJsonOptions,
 ): JsonArray {
   const result: JsonArray = [];
   const array = source as unknown[];
@@ -250,7 +242,7 @@ function convertNumber(source: unknown): JsonPrimitive {
 function convertRegExp(
   source: unknown,
   _state: State,
-  options: ToJsonObjectOptions,
+  options: ToJsonOptions,
 ): JsonPrimitive | undefined {
   if (options.regexpAction === 'skip') return undefined;
 
@@ -263,7 +255,7 @@ function convertRegExp(
 function convertSymbol(
   source: unknown,
   _state: State,
-  options: ToJsonObjectOptions,
+  options: ToJsonOptions,
 ): JsonPrimitive | undefined {
   if (options.symbolAction === 'skip') return undefined;
 
@@ -273,7 +265,7 @@ function convertSymbol(
 /**
  * Возвращает флаг наличия метода toJSON()
  */
-function hasMethodToJSON(value: object): boolean {
+function hasMethodToJSON(value: object): value is { toJSON: () => unknown } {
   return isFunction((value as { toJSON?: unknown }).toJSON);
 }
 

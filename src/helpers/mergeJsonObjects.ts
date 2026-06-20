@@ -24,7 +24,7 @@ type JsonNode = JsonValue | undefined;
 /**
  * Выполняет глубокое объединение JSON-объектов
  */
-export function mergeJsonObject(
+export function mergeJsonObjects(
   target: JsonObject,
   source: JsonObject,
   options?: Partial<MergeJsonOptions>,

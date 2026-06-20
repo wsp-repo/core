@@ -17,10 +17,12 @@ const tests: Test[] = [
   { input: 'ALLUPPER', result: false },
 ];
 
-describe('RegExps. RegExp "REGEXP_CAMEL_CASE"', () => {
-  it.each(tests)('$input = $result', ({ result, input }) => {
-    REGEXP_CAMEL_CASE.lastIndex = 0;
+describe('RegExps', () => {
+  describe('REGEXP_CAMEL_CASE', () => {
+    it.each(tests)('$input = $result', ({ result, input }) => {
+      REGEXP_CAMEL_CASE.lastIndex = 0;
 
-    expect(REGEXP_CAMEL_CASE.test(input)).toEqual(result);
+      expect(REGEXP_CAMEL_CASE.test(input)).toEqual(result);
+    });
   });
 });

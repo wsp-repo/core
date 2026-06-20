@@ -38,116 +38,118 @@ const simpleFunctionResult = simpleFunction();
 const promiseFunctionResult = promiseFunction();
 const asyncFunctionResult = asyncFunction();
 
-describe('Helper getPreciseType:', () => {
-  const TESTS: TestObject[] = [
-    {
-      name: 'undefined',
-      input: undefined,
-      result: 'undefined',
-    },
-    {
-      name: 'null',
-      input: null,
-      result: 'null',
-    },
-    {
-      name: 'true',
-      input: true,
-      result: 'boolean',
-    },
-    {
-      name: 'false',
-      input: false,
-      result: 'boolean',
-    },
-    {
-      name: 'number',
-      input: 123,
-      result: 'number',
-    },
-    {
-      name: 'string',
-      input: 'string',
-      result: 'string',
-    },
-    {
-      name: '/.../',
-      input: /^a$/i,
-      result: 'regexp',
-    },
-    {
-      name: 'RegExp(...)',
-      input: new RegExp('^a$'),
-      result: 'regexp',
-    },
-    {
-      name: 'Date()',
-      input: new Date(),
-      result: 'date',
-    },
-    {
-      name: 'Map',
-      input: new Map(),
-      result: 'map',
-    },
-    {
-      name: 'Set',
-      input: new Set(),
-      result: 'set',
-    },
-    {
-      name: 'Promise',
-      input: new Promise((resolve) => resolve(true)),
-      result: 'promise',
-    },
-    {
-      name: 'Error',
-      input: new Error(),
-      result: 'error',
-    },
-    {
-      name: 'ExtError',
-      input: new ExtError(),
-      result: 'error',
-    },
-    {
-      name: 'AnyClass',
-      input: new TestClass(),
-      result: 'object',
-    },
-    {
-      name: 'Simple function',
-      input: simpleFunction,
-      result: 'function',
-    },
-    {
-      name: 'Promise function',
-      input: promiseFunction,
-      result: 'function',
-    },
-    {
-      name: 'Async function',
-      input: asyncFunction,
-      result: 'function',
-    },
-    {
-      name: 'Call simple function',
-      input: simpleFunctionResult,
-      result: 'number',
-    },
-    {
-      name: 'Call promise function',
-      input: promiseFunctionResult,
-      result: 'promise',
-    },
-    {
-      name: 'Call async function',
-      input: asyncFunctionResult,
-      result: 'promise',
-    },
-  ];
+const TESTS: TestObject[] = [
+  {
+    name: 'undefined',
+    input: undefined,
+    result: 'undefined',
+  },
+  {
+    name: 'null',
+    input: null,
+    result: 'null',
+  },
+  {
+    name: 'true',
+    input: true,
+    result: 'boolean',
+  },
+  {
+    name: 'false',
+    input: false,
+    result: 'boolean',
+  },
+  {
+    name: 'number',
+    input: 123,
+    result: 'number',
+  },
+  {
+    name: 'string',
+    input: 'string',
+    result: 'string',
+  },
+  {
+    name: '/.../',
+    input: /^a$/i,
+    result: 'regexp',
+  },
+  {
+    name: 'RegExp(...)',
+    input: new RegExp('^a$'),
+    result: 'regexp',
+  },
+  {
+    name: 'Date()',
+    input: new Date(),
+    result: 'date',
+  },
+  {
+    name: 'Map',
+    input: new Map(),
+    result: 'map',
+  },
+  {
+    name: 'Set',
+    input: new Set(),
+    result: 'set',
+  },
+  {
+    name: 'Promise',
+    input: new Promise((resolve) => resolve(true)),
+    result: 'promise',
+  },
+  {
+    name: 'Error',
+    input: new Error(),
+    result: 'error',
+  },
+  {
+    name: 'ExtError',
+    input: new ExtError(),
+    result: 'error',
+  },
+  {
+    name: 'AnyClass',
+    input: new TestClass(),
+    result: 'object',
+  },
+  {
+    name: 'Simple function',
+    input: simpleFunction,
+    result: 'function',
+  },
+  {
+    name: 'Promise function',
+    input: promiseFunction,
+    result: 'function',
+  },
+  {
+    name: 'Async function',
+    input: asyncFunction,
+    result: 'function',
+  },
+  {
+    name: 'Call simple function',
+    input: simpleFunctionResult,
+    result: 'number',
+  },
+  {
+    name: 'Call promise function',
+    input: promiseFunctionResult,
+    result: 'promise',
+  },
+  {
+    name: 'Call async function',
+    input: asyncFunctionResult,
+    result: 'promise',
+  },
+];
 
-  it.each(TESTS)('$name => $result', ({ input, result }) => {
-    expect(getPreciseType(input)).toEqual(result);
+describe('Helpers', () => {
+  describe('getPreciseType', () => {
+    it.each(TESTS)('$name => $result', ({ input, result }) => {
+      expect(getPreciseType(input)).toEqual(result);
+    });
   });
 });

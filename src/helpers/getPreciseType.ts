@@ -9,9 +9,7 @@ export function getPreciseType(value: unknown): string {
 
   if (Array.isArray(value)) return 'array';
 
-  if (typeof value !== 'object') {
-    return typeof value;
-  }
+  if (typeof value !== 'object') return typeof value;
 
   const strType = Object.prototype.toString.call(value);
 

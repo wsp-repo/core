@@ -18,7 +18,7 @@ export * from './isString';
 export * from './isTrue';
 export * from './isUndefined';
 export * from './isUpperCase';
-export * from './mergeJsonObject';
+export * from './mergeJsonObjects';
 export * from './pause';
 export * from './snakeCase';
 export * from './toJsonObject';

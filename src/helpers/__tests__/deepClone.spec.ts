@@ -23,127 +23,129 @@ class SecondNode {
   public items: { owner: FirstNode }[] = [];
 }
 
-describe('Helpers object functions', () => {
-  const date = new Date();
+const date = new Date();
 
-  const value: Record<string, unknown> = {
-    bool: true,
-    date: new Date(date),
-    null: null,
-    num: 12345,
-    str: 'string',
-    undef: undefined,
-  };
+const value: Record<string, unknown> = {
+  bool: true,
+  date: new Date(date),
+  null: null,
+  num: 12345,
+  str: 'string',
+  undef: undefined,
+};
 
-  it('deepClone', () => {
-    const clone = deepClone(value);
+describe('Helpers', () => {
+  describe('deepClone', () => {
+    it('Change source', () => {
+      const clone = deepClone(value);
 
-    expect(clone).toEqual(value);
+      expect(clone).toEqual(value);
 
-    const changed = deepClone(value);
-    Object.assign(changed, { num: 98765, str: 'update' });
+      const changed = deepClone(value);
+      Object.assign(changed, { num: 98765, str: 'update' });
 
-    expect(clone).not.toEqual(changed);
-  });
-
-  it('deepClone (clone method)', () => {
-    const value = new CloneValue();
-    const clone = deepClone(value) as {
-      cloned: boolean;
-      nested: { value: string };
-    };
-
-    expect(clone).toEqual({
-      cloned: true,
-      nested: value.nested,
+      expect(clone).not.toEqual(changed);
     });
-    expect(clone.nested).toBe(value.nested);
-  });
 
-  it('deepClone (circular clone)', () => {
-    const value: Record<string, unknown> = { name: 'root' };
-
-    value.child = { parent: value };
-
-    const clone = deepClone(value) as {
-      child: {
-        parent: unknown;
+    it('Use clone() method', () => {
+      const value = new CloneValue();
+      const clone = deepClone(value) as unknown as {
+        cloned: boolean;
+        nested: { value: string };
       };
-    };
 
-    expect(clone).not.toBe(value);
-    expect(clone.child).not.toBe(value.child);
-    expect(clone.child.parent).toBe(clone);
-  });
+      expect(clone).toEqual({
+        cloned: true,
+        nested: value.nested,
+      });
+      expect(clone.nested).toBe(value.nested);
+    });
 
-  it('deepClone (circular classes through array)', () => {
-    const first = new FirstNode();
-    const second = new SecondNode();
+    it('Circular clone', () => {
+      const value: Record<string, unknown> = { name: 'root' };
 
-    first.parent = second;
-    second.items.push({ owner: first });
+      value.child = { parent: value };
 
-    const clone = deepClone(first);
+      const clone = deepClone(value) as {
+        child: {
+          parent: unknown;
+        };
+      };
 
-    expect(clone).not.toBe(first);
-    expect(clone.parent).not.toBe(second);
-    expect(clone.parent?.items[0].owner).toBe(clone);
-  });
+      expect(clone).not.toBe(value);
+      expect(clone.child).not.toBe(value.child);
+      expect(clone.child.parent).toBe(clone);
+    });
 
-  it('deepClone (circular array)', () => {
-    const value: unknown[] = [];
+    it('Circular classes through array', () => {
+      const first = new FirstNode();
+      const second = new SecondNode();
 
-    value.push(value);
+      first.parent = second;
+      second.items.push({ owner: first });
 
-    const clone = deepClone(value);
+      const clone = deepClone(first);
 
-    expect(clone).not.toBe(value);
-    expect(clone[0]).toBe(clone);
-  });
+      expect(clone).not.toBe(first);
+      expect(clone.parent).not.toBe(second);
+      expect(clone.parent?.items[0].owner).toBe(clone);
+    });
 
-  it('deepClone (Map)', () => {
-    const key = { id: 1 };
-    const item = { value: 'item' };
-    const value = new Map<unknown, unknown>([[key, item]]);
-    const clone = deepClone(value);
-    const [[cloneKey, cloneItem]] = [...clone.entries()];
+    it('Circular array', () => {
+      const value: unknown[] = [];
 
-    expect(clone).not.toBe(value);
-    expect(cloneKey).toEqual(key);
-    expect(cloneKey).not.toBe(key);
-    expect(cloneItem).toEqual(item);
-    expect(cloneItem).not.toBe(item);
-  });
+      value.push(value);
 
-  it('deepClone (Set)', () => {
-    const item = { value: 'item' };
-    const value = new Set<unknown>([item]);
-    const clone = deepClone(value);
-    const [cloneItem] = [...clone.values()];
+      const clone = deepClone(value);
 
-    expect(clone).not.toBe(value);
-    expect(cloneItem).toEqual(item);
-    expect(cloneItem).not.toBe(item);
-  });
+      expect(clone).not.toBe(value);
+      expect(clone[0]).toBe(clone);
+    });
 
-  it('deepClone (RegExp)', () => {
-    const value = /^regexp$/gi;
+    it('Clone Map', () => {
+      const key = { id: 1 };
+      const item = { value: 'item' };
+      const value = new Map<unknown, unknown>([[key, item]]);
+      const clone = deepClone(value);
+      const [[cloneKey, cloneItem]] = [...clone.entries()];
 
-    value.lastIndex = 2;
+      expect(clone).not.toBe(value);
+      expect(cloneKey).toEqual(key);
+      expect(cloneKey).not.toBe(key);
+      expect(cloneItem).toEqual(item);
+      expect(cloneItem).not.toBe(item);
+    });
 
-    const clone = deepClone(value);
+    it('Clone Set', () => {
+      const item = { value: 'item' };
+      const value = new Set<unknown>([item]);
+      const clone = deepClone(value);
+      const [cloneItem] = [...clone.values()];
 
-    expect(clone).toEqual(value);
-    expect(clone).not.toBe(value);
-    expect(clone.lastIndex).toBe(0);
-  });
+      expect(clone).not.toBe(value);
+      expect(cloneItem).toEqual(item);
+      expect(cloneItem).not.toBe(item);
+    });
 
-  it('deepClone (function and symbol)', () => {
-    const symbol = Symbol('symbol');
-    const fn = () => process.cwd();
-    const clone = deepClone([symbol, fn]);
+    it('Clone RegExp', () => {
+      const value = /^regexp$/gi;
 
-    expect(clone[0]).toBe(symbol);
-    expect(clone[1]).toBe(fn);
+      value.lastIndex = 2;
+
+      const clone = deepClone(value);
+
+      expect(clone).toEqual(value);
+      expect(clone).not.toBe(value);
+      expect(clone.lastIndex).toBe(0);
+    });
+
+    it('Function and symbol', () => {
+      const symbol = Symbol('symbol');
+      const fn = () => process.cwd();
+      const clone = deepClone([symbol, fn]);
+
+      expect(clone[0]).toBe(symbol);
+      expect(clone[1]).toBe(fn);
+    });
   });
 });

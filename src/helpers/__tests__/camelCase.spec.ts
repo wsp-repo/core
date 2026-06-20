@@ -67,8 +67,10 @@ const TESTS: Test[] = [
   { input: 'HELLO-world_Example-TEST', result: 'helloWorldExampleTest' },
 ];
 
-describe('TypeBox. Helper "toCamelCase"', () => {
-  it.each(TESTS)('camelCase', ({ result, input }) => {
-    expect(camelCase(input)).toEqual(result);
+describe('Helpers', () => {
+  describe('camelCase', () => {
+    it.each(TESTS)('$input => $result', ({ result, input }) => {
+      expect(camelCase(input)).toEqual(result);
+    });
   });
 });

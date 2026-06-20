@@ -86,60 +86,64 @@ const coreErrorDetails = new CoreError('Core error object', {
   str: 'String of object',
 });
 
-describe('Helper getObjectFields', () => {
-  const parent = new Parent();
-  const child = new Child();
-  const obj: Object = {
-    method: () => {},
-    prop2: undefined,
-    prop3: '',
-  };
+const parent = new Parent();
+const child = new Child();
+const obj: Object = {
+  method: () => {},
+  prop2: undefined,
+  prop3: '',
+};
 
-  it('Class Parent', getOptions(), () => {
-    expect(getObjectFields(parent)?.sort()).toEqual(parentFields.sort());
-  });
+describe('Helpers', () => {
+  describe('getObjectFields', () => {
+    it('Class Parent', getOptions(), () => {
+      expect(getObjectFields(parent)?.sort()).toEqual(parentFields.sort());
+    });
 
-  it('Class Child', getOptions(), () => {
-    expect(getObjectFields(child)?.sort()).toEqual(childFields.sort());
-  });
+    it('Class Child', getOptions(), () => {
+      expect(getObjectFields(child)?.sort()).toEqual(childFields.sort());
+    });
 
-  it('Object', getOptions(), () => {
-    expect(getObjectFields(obj)?.sort()).toEqual(['prop2', 'prop3'].sort());
-  });
+    it('Object', getOptions(), () => {
+      expect(getObjectFields(obj)?.sort()).toEqual(['prop2', 'prop3'].sort());
+    });
 
-  it('Error', getOptions(), () => {
-    expect(getObjectFields(error)?.sort()).toEqual(['message', 'name'].sort());
-  });
+    it('Error', getOptions(), () => {
+      expect(getObjectFields(error)?.sort()).toEqual(
+        ['message', 'name'].sort(),
+      );
+    });
 
-  it('CoreError', getOptions(), () => {
-    expect(getObjectFields(coreError)?.sort()).toEqual(
-      ['code', 'details', 'message', 'name', 'statusCode'].sort(),
-    );
-  });
+    it('CoreError', getOptions(), () => {
+      expect(getObjectFields(coreError)?.sort()).toEqual(
+        ['code', 'details', 'message', 'name', 'statusCode'].sort(),
+      );
+    });
 
-  it('CoreError & details', getOptions(), () => {
-    expect(getObjectFields(coreErrorDetails)?.sort()).toEqual(
-      ['code', 'details', 'message', 'name', 'statusCode'].sort(),
-    );
-  });
+    it('CoreError & details', getOptions(), () => {
+      expect(getObjectFields(coreErrorDetails)?.sort()).toEqual(
+        ['code', 'details', 'message', 'name', 'statusCode'].sort(),
+      );
+    });
 
-  it('Date object', () => {
-    expect(getObjectFields(new Date())).toEqual([]);
-  });
+    it('Date object', () => {
+      expect(getObjectFields(new Date())).toEqual([]);
+    });
 
-  it('Map object', () => {
-    const mapValue = new Map([
-      ['a', 1],
-      ['b', 2],
-    ]);
-    expect(getObjectFields(mapValue)).toEqual(['size']);
-  });
+    it('Map object', () => {
+      const mapValue = new Map([
+        ['a', 1],
+        ['b', 2],
+      ]);
+      expect(getObjectFields(mapValue)).toEqual(['size']);
+    });
 
-  it('Set object', () => {
-    expect(getObjectFields(new Set([1, 'b', 2]))).toEqual(['size']);
-  });
+    it('Set object', () => {
+      expect(getObjectFields(new Set([1, 'b', 2]))).toEqual(['size']);
+    });
 
-  it('String value', () => {
-    expect(getObjectFields('string' as any)).toEqual(undefined);
+    it('String value', () => {
+      expect(getObjectFields('string' as any)).toEqual(undefined);
+    });
   });
 });

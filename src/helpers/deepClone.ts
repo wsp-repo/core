@@ -7,7 +7,6 @@ import { isUndefined } from './isUndefined';
 import { AnyObject } from '../types';
 
 type State = { seen: WeakMap<object, unknown> };
-type ObjectWithClone = { clone: () => unknown };
 type Converter = (source: unknown, state: State) => unknown;
 
 const converters: Record<string, Converter> = {
@@ -163,6 +162,6 @@ function cloneSymbol(source: unknown): unknown {
 /**
  * Возвращает флаг наличия метода clone()
  */
-function hasMethodClone(value: object): value is ObjectWithClone {
+function hasMethodClone(value: object): value is { clone: () => unknown } {
   return isFunction((value as { clone?: unknown }).clone);
 }

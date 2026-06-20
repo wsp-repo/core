@@ -6,39 +6,6 @@ const uppers = ['A'.charCodeAt(0), 'Z'.charCodeAt(0)];
 const lowers = ['a'.charCodeAt(0), 'z'.charCodeAt(0)];
 const castDelta = lowers[0] - uppers[0];
 
-/**
- * Возвращает тип символа по коду
- */
-function getCodeType(code: number): CodeTypes {
-  if (code >= numbers[0] && code <= numbers[1]) {
-    return CodeTypes.Number;
-  }
-
-  if (code >= uppers[0] && code <= uppers[1]) {
-    return CodeTypes.Upper;
-  }
-
-  if (code >= lowers[0] && code <= lowers[1]) {
-    return CodeTypes.Lower;
-  }
-
-  return CodeTypes.Skip;
-}
-
-/**
- * Переводит lower-case код в upper-case
- */
-function toUpper(code: number, codeType: CodeTypes): number {
-  return codeType === CodeTypes.Lower ? code - castDelta : code;
-}
-
-/**
- * Переводит upper-case код в lower-case
- */
-function toLower(code: number, codeType: CodeTypes): number {
-  return codeType === CodeTypes.Upper ? code + castDelta : code;
-}
-
 export function camelCase(input: string): string {
   if (input.length === 0) return input;
 
@@ -120,4 +87,37 @@ export function camelCase(input: string): string {
   }
 
   return result.join('');
+}
+
+/**
+ * Возвращает тип символа по коду
+ */
+function getCodeType(code: number): CodeTypes {
+  if (code >= numbers[0] && code <= numbers[1]) {
+    return CodeTypes.Number;
+  }
+
+  if (code >= uppers[0] && code <= uppers[1]) {
+    return CodeTypes.Upper;
+  }
+
+  if (code >= lowers[0] && code <= lowers[1]) {
+    return CodeTypes.Lower;
+  }
+
+  return CodeTypes.Skip;
+}
+
+/**
+ * Переводит lower-case код в upper-case
+ */
+function toUpper(code: number, codeType: CodeTypes): number {
+  return codeType === CodeTypes.Lower ? code - castDelta : code;
+}
+
+/**
+ * Переводит upper-case код в lower-case
+ */
+function toLower(code: number, codeType: CodeTypes): number {
+  return codeType === CodeTypes.Upper ? code + castDelta : code;
 }

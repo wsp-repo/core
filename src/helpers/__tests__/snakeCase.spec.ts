@@ -3,23 +3,25 @@ import { describe, it, expect } from 'vitest';
 import { snakeCase } from '../index';
 
 type Test = {
-  snake: string;
+  result: string;
   value: string;
 };
 
-describe('Check camelCase...', () => {
-  const TESTS: Test[] = [
-    { value: 'aaa', snake: 'aaa' },
-    { value: 'AAA', snake: 'aaa' },
-    { value: 'aAa', snake: 'a_aa' },
-    { value: 'a_aa', snake: 'a_aa' },
-    { value: 'aa123', snake: 'aa_123' },
-    { value: 'aa_123', snake: 'aa_123' },
-    { value: 'aBBa', snake: 'a_bba' },
-    { value: '_aaa', snake: '_aaa' },
-  ];
+const TESTS: Test[] = [
+  { value: 'aaa', result: 'aaa' },
+  { value: 'AAA', result: 'aaa' },
+  { value: 'aAa', result: 'a_aa' },
+  { value: 'a_aa', result: 'a_aa' },
+  { value: 'aa123', result: 'aa_123' },
+  { value: 'aa_123', result: 'aa_123' },
+  { value: 'aBBa', result: 'a_bba' },
+  { value: '_aaa', result: '_aaa' },
+];
 
-  it.each(TESTS)('snakeCase', ({ value, snake }) => {
-    expect(snakeCase(value)).toEqual(snake);
+describe('Helpers', () => {
+  describe('camelCase', () => {
+    it.each(TESTS)('$value => $result', ({ value, result }) => {
+      expect(snakeCase(value)).toEqual(result);
+    });
   });
 });

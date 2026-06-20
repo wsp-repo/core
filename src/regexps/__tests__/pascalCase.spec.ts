@@ -17,10 +17,12 @@ const tests: Test[] = [
   { input: 'ALLUPPER', result: false },
 ];
 
-describe('RegExps. RegExp "REGEXP_PASCAL_CASE"', () => {
-  it.each(tests)('$input = $result', ({ result, input }) => {
-    REGEXP_PASCAL_CASE.lastIndex = 0;
+describe('RegExps', () => {
+  describe('REGEXP_PASCAL_CASE', () => {
+    it.each(tests)('$input = $result', ({ result, input }) => {
+      REGEXP_PASCAL_CASE.lastIndex = 0;
 
-    expect(REGEXP_PASCAL_CASE.test(input)).toEqual(result);
+      expect(REGEXP_PASCAL_CASE.test(input)).toEqual(result);
+    });
   });
 });
