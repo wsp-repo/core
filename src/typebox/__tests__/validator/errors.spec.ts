@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest';
 
 import { TypeboxValidator } from '../../validator';
 
+import { AnyObject } from '../../../types';
 import { TypeboxError } from '../../types';
 
 describe('Typebox - ошибки валидации [TypeboxError]', () => {
@@ -26,7 +27,7 @@ describe('Typebox - ошибки валидации [TypeboxError]', () => {
     const validator = new TypeboxValidator(schema);
     const invalidAge = 150;
 
-    let thrownError: TypeboxError | null = null;
+    let thrownError!: TypeboxError;
 
     try {
       validator.compile({
@@ -38,15 +39,15 @@ describe('Typebox - ошибки валидации [TypeboxError]', () => {
     }
 
     expect(thrownError).toBeInstanceOf(TypeboxError);
-    expect(thrownError!.message).toBe('Ошибка валидации');
-    expect(thrownError!.details).toBeDefined();
-    expect(thrownError!.details!.length).toBeGreaterThan(0);
+    expect(thrownError.message).toBe('Ошибка валидации');
+    expect(thrownError.details).toBeDefined();
+    expect(thrownError.details?.length).toBeGreaterThan(0);
 
     // Проверяем, что есть ошибки для обоих полей
-    const hasAgeError = thrownError!.details!.some(
+    const hasAgeError = thrownError.details?.some(
       (detail) => detail.path && detail.path.includes('/age'),
     );
-    const hasNameError = thrownError!.details!.some(
+    const hasNameError = thrownError.details?.some(
       (detail) => detail.path && detail.path.includes('/name'),
     );
 
@@ -54,13 +55,13 @@ describe('Typebox - ошибки валидации [TypeboxError]', () => {
     expect(hasNameError).toBe(true);
 
     // Проверяем, что детали содержат ожидаемые свойства
-    const ageDetail = thrownError!.details!.find(
+    const ageDetail = thrownError.details?.find(
       (detail) => detail.path && detail.path.includes('/age'),
-    );
+    ) as AnyObject;
     expect(ageDetail).toBeDefined();
-    expect(ageDetail!.message).toBeDefined();
-    expect(ageDetail!.path).toBeDefined();
-    expect(ageDetail!.value).toBe(invalidAge);
+    expect(ageDetail.message).toBeDefined();
+    expect(ageDetail.path).toBeDefined();
+    expect(ageDetail.value).toBe(invalidAge);
   });
 
   it('should handle unknown validation error message when no errors provided', () => {
@@ -69,7 +70,7 @@ describe('Typebox - ошибки валидации [TypeboxError]', () => {
     expect(error.message).toBe('Неизвестная ошибка валидации');
     expect(error.details).toBeDefined();
     expect(error.details).toHaveLength(1);
-    expect(error.details![0].message).toBe('Неизвестная ошибка валидации');
+    expect(error.details?.[0].message).toBe('Неизвестная ошибка валидации');
   });
 
   it('should handle custom details when no valueOf errors provided', () => {
@@ -99,7 +100,7 @@ describe('Typebox - ошибки валидации [TypeboxError]', () => {
       encode: true,
     });
 
-    let thrownError: TypeboxError | null = null;
+    let thrownError!: TypeboxError;
 
     try {
       validator.compile('trigger-error');
@@ -108,11 +109,11 @@ describe('Typebox - ошибки валидации [TypeboxError]', () => {
     }
 
     expect(thrownError).toBeInstanceOf(TypeboxError);
-    expect(thrownError!.message).toBe('Неизвестная ошибка валидации');
-    expect(thrownError!.details).toBeDefined();
-    expect(thrownError!.details).toHaveLength(1);
-    expect(thrownError!.details![0].message).toBe('Encode phase error');
-    expect(thrownError!.errors).toEqual([]); // Нет ошибок ValueError, только обёрнутая ошибка
+    expect(thrownError.message).toBe('Неизвестная ошибка валидации');
+    expect(thrownError.details).toBeDefined();
+    expect(thrownError.details).toHaveLength(1);
+    expect(thrownError.details?.[0].message).toBe('Encode phase error');
+    expect(thrownError.errors).toEqual([]); // Нет ошибок ValueError, только обёрнутая ошибка
   });
 
   it('should handle errors during decode phase', () => {
@@ -131,7 +132,7 @@ describe('Typebox - ошибки валидации [TypeboxError]', () => {
       decode: true,
     });
 
-    let thrownError: TypeboxError | null = null;
+    let thrownError!: TypeboxError;
 
     try {
       validator.compile('trigger-decode-error');
@@ -140,10 +141,10 @@ describe('Typebox - ошибки валидации [TypeboxError]', () => {
     }
 
     expect(thrownError).toBeInstanceOf(TypeboxError);
-    expect(thrownError!.message).toBe('Неизвестная ошибка валидации');
-    expect(thrownError!.details).toBeDefined();
-    expect(thrownError!.details).toHaveLength(1);
-    expect(thrownError!.details![0].message).toBe('Decode phase error');
+    expect(thrownError.message).toBe('Неизвестная ошибка валидации');
+    expect(thrownError.details).toBeDefined();
+    expect(thrownError.details).toHaveLength(1);
+    expect(thrownError.details?.[0].message).toBe('Decode phase error');
   });
 
   it('should handle Union type errors and filter duplicates', () => {
@@ -156,7 +157,7 @@ describe('Typebox - ошибки валидации [TypeboxError]', () => {
 
     const validator = new TypeboxValidator(unionSchema);
 
-    let thrownError: TypeboxError | null = null;
+    let thrownError!: TypeboxError;
 
     try {
       validator.compile({
@@ -167,11 +168,11 @@ describe('Typebox - ошибки валидации [TypeboxError]', () => {
     }
 
     expect(thrownError).toBeInstanceOf(TypeboxError);
-    expect(thrownError!.message).toBe('Ошибка валидации');
-    expect(thrownError!.details).toBeDefined();
+    expect(thrownError.message).toBe('Ошибка валидации');
+    expect(thrownError.details).toBeDefined();
 
     // Должна быть ошибка Union с фильтрацией пути
-    const unionError = thrownError!.details!.find(
+    const unionError = thrownError.details?.find(
       (detail) => detail.path && detail.path.includes('/value'),
     );
     expect(unionError).toBeDefined();

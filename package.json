@@ -62,7 +62,7 @@
     "@sinclair/typemap": "0.10.1"
   },
   "devDependencies": {
-    "@zalib/devkit": "^5.9.6"
+    "@zalib/devkit": "^5.9.8"
   },
   "lint-staged": {
     "package.json": "check-exact-package",
