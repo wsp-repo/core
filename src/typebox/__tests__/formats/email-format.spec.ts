@@ -9,7 +9,7 @@ const emailValidator = new TypeboxValidator(
   Type.String({ format: TFormats.Email }),
 );
 
-describe('TypeBox', () => {
+describe('Typebox', () => {
   describe('TFormats.Email', () => {
     describe('valid email addresses', () => {
       it.each([

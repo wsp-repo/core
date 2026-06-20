@@ -19,7 +19,7 @@ const TESTS: Test[] = [
 ];
 
 describe('Helpers', () => {
-  describe('camelCase', () => {
+  describe('snakeCase', () => {
     it.each(TESTS)('$value => $result', ({ value, result }) => {
       expect(snakeCase(value)).toEqual(result);
     });

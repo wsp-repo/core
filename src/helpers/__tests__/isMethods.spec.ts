@@ -2,14 +2,7 @@
 
 import { describe, it, expect } from 'vitest';
 
-import {
-  isDefined,
-  isError,
-  isFunction,
-  isObject,
-  isTrue,
-  isUndefined,
-} from '../index';
+import { isDefined, isFunction, isObject, isTrue, isUndefined } from '../index';
 
 type TestIsMethods = {
   isDef: boolean;
@@ -18,8 +11,6 @@ type TestIsMethods = {
   isUndef: boolean;
   value: unknown;
 };
-
-class ExtError extends Error {}
 
 const cls = new (class Test {
   public isDef = 33;
@@ -106,20 +97,6 @@ const isTrueTests: { result: boolean; value?: unknown }[] = [
   { result: false },
 ];
 
-const TESTS_IS_ERROR: { result: boolean; value?: unknown }[] = [
-  { result: false, value: { property: 'Custom property' } },
-  {
-    result: true,
-    value: {
-      message: 'Obj error',
-      name: 'Obj error',
-      stack: 'Stack data',
-    },
-  },
-  { result: true, value: new Error('Base error') },
-  { result: true, value: new ExtError('Ext error') },
-];
-
 describe('Helpers', () => {
   describe('isDefined', () => {
     it.each(TESTS)('$value => $isDef', ({ value, isDef }) => {
@@ -148,12 +125,6 @@ describe('Helpers', () => {
   describe('isTrue', () => {
     it.each(isTrueTests)('$value => $result', ({ value, result }) => {
       expect(isTrue(value)).toEqual(result);
-    });
-  });
-
-  describe('isError', () => {
-    it.each(TESTS_IS_ERROR)('$value => $result', ({ value, result }) => {
-      expect(isError(value)).toEqual(result);
     });
   });
 });

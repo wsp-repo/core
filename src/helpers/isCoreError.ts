@@ -5,7 +5,7 @@ import { isObject } from './isObject';
 
 export function isCoreError(
   value?: unknown,
-  strict?: true,
+  strict: boolean = true,
 ): value is CoreError {
   if (value instanceof CoreError) return true;
 

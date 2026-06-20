@@ -19,7 +19,7 @@ const invalidStrings: (string | number)[] = [
   -1234,
 ];
 
-describe('TypeBox', () => {
+describe('Typebox', () => {
   describe('Type.ByteSize', () => {
     describe('direct value', () => {
       const validator = createValidator(Type.ByteSize());
