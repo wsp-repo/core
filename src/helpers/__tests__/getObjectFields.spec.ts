@@ -79,6 +79,10 @@ type Object = {
 };
 
 const error = new Error('Base error object');
+const errorCause = new Error('Base error object', { cause: 'Error cause' });
+const errorUndefinedCause = new Error('Base error object', {
+  cause: undefined,
+});
 
 const coreError = new CoreError('Core error object');
 
@@ -108,21 +112,46 @@ describe('Helpers', () => {
       expect(getObjectFields(obj)?.sort()).toEqual(['prop2', 'prop3'].sort());
     });
 
+    it('Getter overridden by method', getOptions(), () => {
+      const parent = Object.create(null, {
+        inherited: { get: () => 'value' },
+        overridden: { get: () => 'value' },
+      }) as object;
+      const proto = Object.create(parent, {
+        overridden: { value: () => undefined },
+      }) as object;
+      const value = Object.create(proto) as object;
+
+      expect(getObjectFields(value)).toEqual(['inherited']);
+    });
+
     it('Error', getOptions(), () => {
       expect(getObjectFields(error)?.sort()).toEqual(
-        ['message', 'name'].sort(),
+        ['message', 'name', 'stack'].sort(),
+      );
+    });
+
+    it('Error & cause', getOptions(), () => {
+      expect(getObjectFields(errorCause)?.sort()).toEqual(
+        ['cause', 'message', 'name', 'stack'].sort(),
+      );
+    });
+
+    it('Error & undefined cause', getOptions(), () => {
+      expect(getObjectFields(errorUndefinedCause)?.sort()).toEqual(
+        ['cause', 'message', 'name', 'stack'].sort(),
       );
     });
 
     it('CoreError', getOptions(), () => {
       expect(getObjectFields(coreError)?.sort()).toEqual(
-        ['code', 'details', 'message', 'name', 'statusCode'].sort(),
+        ['code', 'details', 'message', 'name', 'stack', 'statusCode'].sort(),
       );
     });
 
     it('CoreError & details', getOptions(), () => {
       expect(getObjectFields(coreErrorDetails)?.sort()).toEqual(
-        ['code', 'details', 'message', 'name', 'statusCode'].sort(),
+        ['code', 'details', 'message', 'name', 'stack', 'statusCode'].sort(),
       );
     });
 

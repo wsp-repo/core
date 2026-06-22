@@ -15,41 +15,51 @@ export function getObjectFields<T extends object>(
 ): (keyof T)[] | undefined {
   if (!isObject(value)) return undefined;
 
-  const keys = new Set();
+  const keys = new Set<string>();
+  const fields = new Set<string>();
 
   let proto = Object.getPrototypeOf(value);
 
+  // Сначала проход по самому объекту значения
+  for (const key of Object.getOwnPropertyNames(value)) {
+    const descriptor = Object.getOwnPropertyDescriptor(value, key);
+
+    if (isField(value, key, descriptor)) fields.add(key);
+
+    keys.add(key);
+  }
+
+  // Проход по дереву прототипов
   while (proto && proto !== Object.prototype) {
     for (const key of Object.getOwnPropertyNames(proto)) {
-      if (ignoredFields.has(key)) continue;
+      if (keys.has(key)) continue;
 
       const descriptor = Object.getOwnPropertyDescriptor(proto, key);
 
-      if (isFunction(descriptor?.value)) continue;
+      if (isField(value, key, descriptor)) fields.add(key);
 
-      if (descriptor && 'get' in descriptor) {
-        keys.add(key);
-
-        continue;
-      }
-
-      if (!isFunction(value[key as keyof T])) {
-        keys.add(key);
-      }
+      keys.add(key);
     }
 
     proto = Object.getPrototypeOf(proto);
   }
 
-  Object.keys(value).forEach((key) => {
-    if (ignoredFields.has(key) || keys.has(key)) {
-      return;
-    }
+  return [...fields] as (keyof T)[];
+}
 
-    if (!isFunction(value[key as keyof T])) {
-      keys.add(key);
-    }
-  });
+/**
+ * Проверяет на "поле" с использованием дескриптора
+ */
+function isField<T extends object>(
+  value: T,
+  key: string,
+  descriptor?: PropertyDescriptor,
+): boolean {
+  if (ignoredFields.has(key)) return false;
 
-  return [...keys] as (keyof T)[];
+  if (isFunction(descriptor?.value)) return false;
+
+  if (descriptor && 'get' in descriptor) return true;
+
+  return !isFunction(value[key as keyof T]);
 }

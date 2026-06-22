@@ -76,6 +76,25 @@ describe('Helpers', () => {
       expect(toJsonObject(date)).toEqual('2026-06-18T12:34:56.000Z');
     });
 
+    it('Error', getOptions(), () => {
+      const cause = new Error('Cause error');
+      const error = new Error('Base error', { cause });
+
+      cause.stack = 'Cause stack';
+      error.stack = 'Base stack';
+
+      expect(toJsonObject(error)).toEqual({
+        cause: {
+          message: 'Cause error',
+          name: 'Error',
+          stack: 'Cause stack',
+        },
+        message: 'Base error',
+        name: 'Error',
+        stack: 'Base stack',
+      });
+    });
+
     it('Map', getOptions(), () => {
       const map = new Map<unknown, unknown>([
         ['str', 'value'],
