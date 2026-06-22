@@ -1,7 +1,9 @@
-type CoreErrorJson<TDetails = unknown> = {
+export type CoreErrorJson<TDetails = unknown> = {
   code: string;
   details?: TDetails;
   message: string;
+  name: string;
+  stack?: string;
   statusCode: number;
 };
 
@@ -24,6 +26,8 @@ export class CoreError<TDetails = unknown> extends Error {
       code: this.code,
       details: this.details,
       message: this.message,
+      name: this.name,
+      stack: this.stack,
       statusCode: this.statusCode,
     };
   }

@@ -13,6 +13,7 @@ export * from './schemas';
 export * from './validator';
 export * from './types';
 
+// расширение оригинального объекта Type
 type ExtendedType = typeof OriginalType & {
   ByteSize: typeof TByteSize;
   Timestamp: typeof TTimestamp;

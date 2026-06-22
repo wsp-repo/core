@@ -1,6 +1,6 @@
 {
   "name": "@zalib/core",
-  "version": "5.9.16",
+  "version": "5.9.19",
   "description": "Core package",
   "license": "UNLICENSED",
   "engines": {
@@ -62,7 +62,7 @@
     "@sinclair/typemap": "0.10.1"
   },
   "devDependencies": {
-    "@zalib/devkit": "^5.9.6"
+    "@zalib/devkit": "^5.9.8"
   },
   "lint-staged": {
     "package.json": "check-exact-package",

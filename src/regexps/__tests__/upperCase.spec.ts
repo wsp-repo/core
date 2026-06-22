@@ -19,10 +19,12 @@ const tests: Test[] = [
   { input: 'Lower_SIMBOL', result: false },
 ];
 
-describe('RegExps. RegExp "REGEXP_UPPER_CASE"', () => {
-  it.each(tests)('$input = $result', ({ result, input }) => {
-    REGEXP_UPPER_CASE.lastIndex = 0;
+describe('RegExps', () => {
+  describe('REGEXP_UPPER_CASE', () => {
+    it.each(tests)('$input = $result', ({ result, input }) => {
+      REGEXP_UPPER_CASE.lastIndex = 0;
 
-    expect(REGEXP_UPPER_CASE.test(input)).toEqual(result);
+      expect(REGEXP_UPPER_CASE.test(input)).toEqual(result);
+    });
   });
 });

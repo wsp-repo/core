@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 /**
  * Очищает объект от undefined (+null) значений
  * - без рекурсивного прохода по свойствам объекта

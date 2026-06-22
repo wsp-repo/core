@@ -5,7 +5,8 @@
     "incremental": false
   },
   "exclude": [
-    "./**/*spec.ts",
+    "./**/__tests__",
+    "./**/*.spec.ts",
     "./node_modules",
     "./dist"
   ]

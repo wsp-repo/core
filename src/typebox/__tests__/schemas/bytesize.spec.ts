@@ -19,37 +19,39 @@ const invalidStrings: (string | number)[] = [
   -1234,
 ];
 
-describe('TypeBox - проверка схемы [Type.ByteSize]', () => {
-  describe('непосредственное значение', () => {
-    const validator = createValidator(Type.ByteSize());
+describe('Typebox', () => {
+  describe('Type.ByteSize', () => {
+    describe('direct value', () => {
+      const validator = createValidator(Type.ByteSize());
 
-    it.each(validTests)('корректное значение: %s', ({ input, result }) => {
-      expect(() => validator.compile(input)).not.toThrow();
-      expect(validator.compile(input).toString()).toBe(result);
+      it.each(validTests)('$input => $result', ({ input, result }) => {
+        expect(() => validator.compile(input)).not.toThrow();
+        expect(validator.compile(input).toString()).toBe(result);
+      });
+
+      it.each(invalidStrings)('$input => throw', (value) => {
+        expect(() => validator.compile(value)).toThrow();
+      });
     });
 
-    it.each(invalidStrings)('некорректное значение: %s', (value) => {
-      expect(() => validator.compile(value)).toThrow();
-    });
-  });
-
-  describe('значение как свойство объекта', () => {
-    const validator = createValidator(
-      Type.Object({ bytesize: Type.ByteSize() }),
-    );
-
-    it.each(validTests)('корректное значение: %s', ({ input, result }) => {
-      expect(() => validator.compile({ bytesize: input })).not.toThrow();
-      expect(() =>
-        validator.compile({ bytesize: input }).bytesize.toString(),
-      ).not.toThrow();
-      expect(validator.compile({ bytesize: input }).bytesize.toString()).toBe(
-        result,
+    describe('value as property of object', () => {
+      const validator = createValidator(
+        Type.Object({ bytesize: Type.ByteSize() }),
       );
-    });
 
-    it.each(invalidStrings)('некорректное значение: %s', (value) => {
-      expect(() => validator.compile({ bytesize: value })).toThrow();
+      it.each(validTests)('$input => $result', ({ input, result }) => {
+        expect(() => validator.compile({ bytesize: input })).not.toThrow();
+        expect(() =>
+          validator.compile({ bytesize: input }).bytesize.toString(),
+        ).not.toThrow();
+        expect(validator.compile({ bytesize: input }).bytesize.toString()).toBe(
+          result,
+        );
+      });
+
+      it.each(invalidStrings)('$input => throw', (value) => {
+        expect(() => validator.compile({ bytesize: value })).toThrow();
+      });
     });
   });
 });

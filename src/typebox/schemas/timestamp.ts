@@ -17,7 +17,7 @@ export type TTimestamp = TTransform<TUnion<[TString, TNumber]>, Timestamp>;
 
 export function TTimestamp(options?: SchemaOptions): TTimestamp {
   const inputSchema = Type.Union([
-    Type.String({ format: TFormats.ByteSize }),
+    Type.String({ format: TFormats.Timestamp }),
     Type.Number({ minimum: 0 }),
   ]);
 

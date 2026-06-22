@@ -1,20 +1,18 @@
 import { ValueError, ValueErrorType } from '@sinclair/typebox/errors';
 
 import { ValidationDetail, ValidationError } from '../../errors';
-import { isEmpty } from '../../helpers';
 
 export class TypeboxError extends ValidationError {
   constructor(
     public readonly errors: ValueError[] = [],
     details?: ValidationDetail[],
   ) {
-    const message = isEmpty(errors)
-      ? 'Неизвестная ошибка валидации'
-      : 'Ошибка валидации';
+    const message =
+      errors.length === 0 ? 'Неизвестная ошибка валидации' : 'Ошибка валидации';
 
     let setDetails: ValidationDetail[] = [];
 
-    if (isEmpty(errors)) {
+    if (errors.length === 0) {
       setDetails = details || [{ message }];
     } else {
       const unionPaths: string[] = [];

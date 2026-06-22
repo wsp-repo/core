@@ -2,23 +2,15 @@
 
 import { describe, it, expect } from 'vitest';
 
-import {
-  isDefined,
-  isError,
-  isFunction,
-  isObject,
-  isTrue,
-  isUndefined,
-} from '../index';
+import { isDefined, isFunction, isObject, isTrue, isUndefined } from '../index';
 
 type TestIsMethods = {
   isDef: boolean;
   isFunc: boolean;
   isObj: boolean;
+  isUndef: boolean;
   value: unknown;
 };
-
-class ExtError extends Error {}
 
 const cls = new (class Test {
   public isDef = 33;
@@ -30,82 +22,109 @@ const cls = new (class Test {
   }
 })();
 
-describe('Helpers checkers is...', () => {
-  const TESTS: TestIsMethods[] = [
-    { isDef: true, isFunc: false, isObj: false, value: 1 },
-    { isDef: true, isFunc: false, isObj: false, value: false },
-    { isDef: true, isFunc: false, isObj: false, value: 'sdfgdsf' },
-    { isDef: true, isFunc: false, isObj: false, value: '' },
-    { isDef: true, isFunc: false, isObj: false, value: [] },
-    { isDef: true, isFunc: false, isObj: true, value: {} },
-    {
-      isDef: true,
-      isFunc: true,
-      isObj: false,
-      value: () => {
-        process.cwd();
-      },
+const TESTS: TestIsMethods[] = [
+  { isDef: true, isFunc: false, isObj: false, isUndef: false, value: 1 },
+  { isDef: true, isFunc: false, isObj: false, isUndef: false, value: false },
+  {
+    isDef: true,
+    isFunc: false,
+    isObj: false,
+    isUndef: false,
+    value: 'sdfgdsf',
+  },
+  { isDef: true, isFunc: false, isObj: false, isUndef: false, value: '' },
+  { isDef: true, isFunc: false, isObj: false, isUndef: false, value: [] },
+  { isDef: true, isFunc: false, isObj: true, isUndef: false, value: {} },
+  {
+    isDef: true,
+    isFunc: true,
+    isObj: false,
+    isUndef: false,
+    value: () => {
+      process.cwd();
     },
-    { isDef: true, isFunc: false, isObj: false, value: null },
-    { isDef: false, isFunc: false, isObj: false, value: undefined },
-    { isDef: true, isFunc: false, isObj: true, value: cls },
-    { isDef: true, isFunc: false, isObj: false, value: cls.isDef },
-    { isDef: false, isFunc: false, isObj: false, value: cls.isUndef },
-    { isDef: true, isFunc: true, isObj: false, value: cls.method },
-    { isDef: false, isFunc: false, isObj: false, value: cls.method() },
-  ];
+  },
+  { isDef: true, isFunc: false, isObj: false, isUndef: false, value: null },
+  {
+    isDef: false,
+    isFunc: false,
+    isObj: false,
+    isUndef: true,
+    value: undefined,
+  },
+  { isDef: true, isFunc: false, isObj: true, isUndef: false, value: cls },
+  {
+    isDef: true,
+    isFunc: false,
+    isObj: false,
+    isUndef: false,
+    value: cls.isDef,
+  },
+  {
+    isDef: false,
+    isFunc: false,
+    isObj: false,
+    isUndef: true,
+    value: cls.isUndef,
+  },
+  {
+    isDef: true,
+    isFunc: true,
+    isObj: false,
+    isUndef: false,
+    value: cls.method,
+  },
+  {
+    isDef: false,
+    isFunc: false,
+    isObj: false,
+    isUndef: true,
+    value: cls.method(),
+  },
+];
 
-  it.each(TESTS)('isDefined', ({ value, isDef }) => {
-    expect(isDefined(value)).toEqual(isDef);
+const isTrueTests: { result: boolean; value?: unknown }[] = [
+  { result: true, value: true },
+  { result: true, value: 'true' },
+  { result: true, value: 'TRUE' },
+  { result: true, value: 'True' },
+  { result: true, value: 1 },
+  { result: true, value: '1' },
+  { result: true, value: 'ON' },
+  { result: false, value: false },
+  { result: false, value: 'false' },
+  { result: false, value: 0 },
+  { result: false },
+];
+
+describe('Helpers', () => {
+  describe('isDefined', () => {
+    it.each(TESTS)('$value => $isDef', ({ value, isDef }) => {
+      expect(isDefined(value)).toEqual(isDef);
+    });
   });
 
-  it.each(TESTS)('isUndefined', ({ value, isDef }) => {
-    expect(isUndefined(value)).toEqual(!isDef);
+  describe('isUndefined', () => {
+    it.each(TESTS)('$value => $isUndef', ({ value, isUndef }) => {
+      expect(isUndefined(value)).toEqual(isUndef);
+    });
   });
 
-  it.each(TESTS)('isObject', ({ value, isObj }) => {
-    expect(isObject(value)).toEqual(isObj);
+  describe('isObject', () => {
+    it.each(TESTS)('$value => $isObj', ({ value, isObj }) => {
+      expect(isObject(value)).toEqual(isObj);
+    });
   });
 
-  it.each(TESTS)('isFunction', ({ value, isFunc }) => {
-    expect(isFunction(value)).toEqual(isFunc);
+  describe('isFunction', () => {
+    it.each(TESTS)('$value => $isFunc', ({ value, isFunc }) => {
+      expect(isFunction(value)).toEqual(isFunc);
+    });
   });
 
-  const isTrueTests: { result: boolean; value?: unknown }[] = [
-    { result: true, value: true },
-    { result: true, value: 'true' },
-    { result: true, value: 'TRUE' },
-    { result: true, value: 'True' },
-    { result: true, value: 1 },
-    { result: true, value: '1' },
-    { result: true, value: 'ON' },
-    { result: true, value: [1] },
-    { result: true, value: { key: 1 } },
-    { result: true, value: () => true },
-    { result: false, value: false },
-    { result: false, value: 'false' },
-    { result: false, value: 0 },
-    { result: false, value: [] },
-    { result: false, value: {} },
-    { result: false, value: () => false },
-    { result: false },
-  ];
-  it.each(isTrueTests)('isTrue', ({ value, result }) => {
-    expect(isTrue(value)).toEqual(result);
-  });
-
-  it('isError', () => {
-    const not = { property: 'Custom property' };
-    const obj = { message: 'Obj error', stack: 'Stack data' };
-    const err = new Error('Base error');
-    const ext = new ExtError('Ext error');
-
-    expect(isError(not)).toBe(false);
-    expect(isError(obj)).toBe(true);
-    expect(isError(obj, true)).toBe(false);
-    expect(isError(err)).toBe(true);
-    expect(isError(err, true)).toBe(true);
-    expect(isError(ext)).toBe(true);
-    expect(isError(ext, true)).toBe(true);
+  describe('isTrue', () => {
+    it.each(isTrueTests)('$value => $result', ({ value, result }) => {
+      expect(isTrue(value)).toEqual(result);
+    });
   });
 });

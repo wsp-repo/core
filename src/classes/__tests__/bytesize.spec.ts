@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { ByteSize } from '../bytesize';
+import { ByteSize } from '../index';
 
 type TestSuccess = {
   bytes: number;
@@ -44,28 +44,30 @@ const TEST_TO_STRING: { bytes: number; result: string }[] = [
   { bytes: 1234567, result: '1Mb 181Kb 647b' },
 ];
 
-describe('Extend ByteSize', () => {
-  it.each(TESTS_ERROR)('error', (input) => {
-    const test = (): ByteSize => new ByteSize(input);
+describe('Classes', () => {
+  describe('ByteSize', () => {
+    it.each(TESTS_ERROR)('error', (input) => {
+      const test = (): ByteSize => new ByteSize(input);
 
-    expect(test).toThrow();
-  });
+      expect(test).toThrow();
+    });
 
-  it.each(TESTS_SUCCESS)('success', ({ input, ...values }) => {
-    const bytesize = new ByteSize(input);
+    it.each(TESTS_SUCCESS)('success', ({ input, ...values }) => {
+      const bytesize = new ByteSize(input);
 
-    expect(bytesize.toBytes()).toEqual(values.bytes);
-    expect(bytesize.toKb()).toEqual(values.kbFloat);
-    expect(bytesize.toKb(true)).toEqual(values.kbCeil);
-    expect(bytesize.toMb()).toEqual(values.mbFloat);
-    expect(bytesize.toMb(true)).toEqual(values.mbCeil);
-    expect(bytesize.toGb()).toEqual(values.gbFloat);
-    expect(bytesize.toGb(true)).toEqual(values.gbCeil);
-  });
+      expect(bytesize.toBytes()).toEqual(values.bytes);
+      expect(bytesize.toKb()).toEqual(values.kbFloat);
+      expect(bytesize.toKb(true)).toEqual(values.kbCeil);
+      expect(bytesize.toMb()).toEqual(values.mbFloat);
+      expect(bytesize.toMb(true)).toEqual(values.mbCeil);
+      expect(bytesize.toGb()).toEqual(values.gbFloat);
+      expect(bytesize.toGb(true)).toEqual(values.gbCeil);
+    });
 
-  it.each(TEST_TO_STRING)('error', ({ bytes, result }) => {
-    const bytesize = new ByteSize(bytes);
+    it.each(TEST_TO_STRING)('error', ({ bytes, result }) => {
+      const bytesize = new ByteSize(bytes);
 
-    expect(bytesize.toString()).toEqual(result);
+      expect(bytesize.toString()).toEqual(result);
+    });
   });
 });

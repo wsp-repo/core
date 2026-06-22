@@ -1,18 +1,19 @@
 import { isDefined } from './isDefined';
+import { isObject } from './isObject';
 
 /**
  * Проверяет, что объект является инстансом ошибки
  * - при строгой проверке должен быть инстансом Error
  */
-export function isError<T extends Error>(
+export function isError(
   value?: unknown,
-  strict = false,
-): value is T {
+  strict: boolean = true,
+): value is Error {
   if (value instanceof Error) return true;
 
-  if (!value || strict) return false;
+  if (strict || !isObject(value)) return false;
 
-  const { message, stack } = (value as Error) || {};
+  const asError = value as Error;
 
-  return isDefined(message) && isDefined(stack);
+  return isDefined(asError.message) && isDefined(asError.name);
 }

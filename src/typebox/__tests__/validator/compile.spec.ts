@@ -27,18 +27,20 @@ const errorValue: TestType = {
   string: '12345',
 };
 
-describe('Typebox - валидация [validator.compile(...)]', () => {
-  const validator = createValidator(testSchema);
+describe('Typebox', () => {
+  describe('validator.compile(...)', () => {
+    const validator = createValidator(testSchema);
 
-  it('Create typebox validator', () => {
-    expect(validator).toBeDefined();
-  });
+    it('Create typebox validator', () => {
+      expect(validator).toBeDefined();
+    });
 
-  it('Success validate', () => {
-    expect(validator.compile(successValue)).toEqual(successValue);
-  });
+    it('Success validate', () => {
+      expect(validator.compile(successValue)).toEqual(successValue);
+    });
 
-  it('Error fixed options', () => {
-    expect(() => validator.compile(errorValue)).toThrow();
+    it('Error fixed options', () => {
+      expect(() => validator.compile(errorValue)).toThrow();
+    });
   });
 });
