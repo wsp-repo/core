@@ -47,11 +47,11 @@ describe('Helpers', () => {
       expect(toJsonObject(Number.POSITIVE_INFINITY)).toEqual(null);
     });
 
-    it('Ignored root values', getOptions(), () => {
+    it('Root special values', getOptions(), () => {
       expect(toJsonObject(undefined)).toEqual(undefined);
       expect(toJsonObject(() => process.cwd())).toEqual(undefined);
-      expect(toJsonObject(Symbol('symbol'))).toEqual(undefined);
-      expect(toJsonObject(/^regexp$/i)).toEqual(undefined);
+      expect(toJsonObject(Symbol('symbol'))).toEqual('[Symbol]');
+      expect(toJsonObject(/^regexp$/i)).toEqual('[RegExp /^regexp$/i]');
     });
 
     it('Object properties and getters', getOptions(), () => {
@@ -135,12 +135,24 @@ describe('Helpers', () => {
         symbol: Symbol('symbol'),
       };
 
-      expect(toJsonObject(value)).toEqual({});
+      expect(toJsonObject(value)).toEqual({
+        regexp: '[RegExp /^regexp$/i]',
+        symbol: '[Symbol]',
+      });
+      expect(
+        toJsonObject(value, { regexpAction: 'skip', symbolAction: 'skip' }),
+      ).toEqual({});
       expect(
         toJsonObject(value, { regexpAction: 'string', symbolAction: 'string' }),
       ).toEqual({
         regexp: '/^regexp$/i',
         symbol: 'Symbol(symbol)',
+      });
+      expect(
+        toJsonObject(value, { regexpAction: 'meta', symbolAction: 'meta' }),
+      ).toEqual({
+        regexp: '[RegExp /^regexp$/i]',
+        symbol: '[Symbol]',
       });
     });
 
@@ -150,7 +162,7 @@ describe('Helpers', () => {
       circular.child = { parent: circular };
 
       try {
-        toJsonObject(circular);
+        toJsonObject(circular, { circularAction: 'throw' });
       } catch (error) {
         const coreError = error as CoreError<CircularDetails>;
 
@@ -173,6 +185,28 @@ describe('Helpers', () => {
 
       expect(toJsonObject(circular, { circularAction: 'skip' })).toEqual({
         child: {},
+        name: 'root',
+      });
+    });
+
+    it('Circular default', getOptions(), () => {
+      const circular: Record<string, unknown> = { name: 'root' };
+
+      circular.child = { parent: circular };
+
+      expect(toJsonObject(circular)).toEqual({
+        child: { parent: '[Circular $]' },
+        name: 'root',
+      });
+    });
+
+    it('Circular meta', getOptions(), () => {
+      const circular: Record<string, unknown> = { name: 'root' };
+
+      circular.child = { parent: circular };
+
+      expect(toJsonObject(circular, { circularAction: 'meta' })).toEqual({
+        child: { parent: '[Circular $]' },
         name: 'root',
       });
     });

@@ -15,9 +15,9 @@ import {
 } from '../types';
 
 export type ToJsonOptions = {
-  circularAction: 'skip' | 'throw';
-  regexpAction: 'skip' | 'string';
-  symbolAction: 'skip' | 'string';
+  circularAction: 'meta' | 'skip' | 'throw';
+  regexpAction: 'meta' | 'skip' | 'string';
+  symbolAction: 'meta' | 'skip' | 'string';
   trimArrayUndefined: boolean;
 };
 
@@ -40,9 +40,9 @@ const converters: Record<string, Converter> = {
 };
 
 const defaultOptions: ToJsonOptions = {
-  circularAction: 'throw',
-  regexpAction: 'skip',
-  symbolAction: 'skip',
+  circularAction: 'meta',
+  regexpAction: 'meta',
+  symbolAction: 'meta',
   trimArrayUndefined: false,
 };
 
@@ -71,9 +71,14 @@ function convert(
     const seenPath = state.seen.get(source);
 
     if (isDefined(seenPath)) {
-      if (options.circularAction === 'skip') return undefined;
-
-      throw createCircularError(seenPath, state.path);
+      switch (options.circularAction) {
+        case 'meta':
+          return createMeta('Circular', seenPath);
+        case 'skip':
+          return undefined;
+        default:
+          throw createCircularError(seenPath, state.path);
+      }
     }
 
     if (hasMethodToJSON(source)) {
@@ -244,9 +249,13 @@ function convertRegExp(
   _state: State,
   options: ToJsonOptions,
 ): JsonPrimitive | undefined {
-  if (options.regexpAction === 'skip') return undefined;
+  if (options.regexpAction === 'skip') {
+    return undefined;
+  }
 
-  return String(source);
+  return options.regexpAction === 'meta'
+    ? createMeta('RegExp', String(source))
+    : String(source);
 }
 
 /**
@@ -259,7 +268,16 @@ function convertSymbol(
 ): JsonPrimitive | undefined {
   if (options.symbolAction === 'skip') return undefined;
 
-  return String(source);
+  return options.symbolAction === 'meta'
+    ? createMeta('Symbol')
+    : String(source);
+}
+
+/**
+ * Возвращает строку с метаданными специального значения
+ */
+function createMeta(type: string, value?: string): string {
+  return `[${type}${value ? ` ${value}` : ''}]`;
 }
 
 /**
