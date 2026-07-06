@@ -27,9 +27,9 @@
       "default": "./dist/helpers/index.js",
       "types": "./dist/helpers/index.d.ts"
     },
-    "./regexp": {
-      "default": "./dist/regexp/index.js",
-      "types": "./dist/regexp/index.d.ts"
+    "./regexps": {
+      "default": "./dist/regexps/index.js",
+      "types": "./dist/regexps/index.d.ts"
     },
     "./typebox": {
       "default": "./dist/typebox/index.js",
@@ -58,8 +58,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@sinclair/typebox": "0.34.49",
-    "@sinclair/typemap": "0.10.1"
+    "@sinclair/typebox": "0.34.49"
   },
   "devDependencies": {
     "@zalib/devkit": "^5.9.8"
